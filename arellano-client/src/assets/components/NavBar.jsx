@@ -11,11 +11,11 @@ const links = [
   {/* Navigation bar design | Enhancement 1:DONE ꩜ */}
   const navLinkClassName = ({ isActive }) =>
   [
-    "rounded-full border-2 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-300",
+    "rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-300",
     isActive
       ? "border-yellow-500 bg-gray-300 text-black shadow-[0_0_10px_rgba(253,224,71,0.7)] hover:shadow-[0_0_20px_rgba(253,224,71,0.9)]"
-      : "border-transparent bg-yellow-200 text-black hover:bg-gray-300 hover:border-gray-200 hover:shadow-[0_0_10px_rgba(253,224,71,0.7)] hover:shadow-[0_0_20px_rgba(253,224,71,0.9)]",
-  ].join(" ");
+      : "border-transparent bg-yellow-200 text-black hover:bg-gray-300 hover:border-gray-200 hover:shadow-[0_0_10px_rgba(253,224,71,0.7)]",
+  ]
 
 const NavBar = () => {
   return (
