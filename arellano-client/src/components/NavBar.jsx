@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import bgImage from "../images/whip.jpg";
-import logo from "../images/glow.png";
+import bgImage from "../assets/images/whip.jpg";
+import logo from "../assets/images/glow.png";
 
 const links = [
   { label: "Home", to: "/" },

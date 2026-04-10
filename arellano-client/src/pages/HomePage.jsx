@@ -1,8 +1,8 @@
-import Button from '../components/Button';
-import fairyImage from '../images/fairy-hero.jpg'; 
-import plantImage from '../images/plant.jpg'; 
-import fairyPlace from '../images/fairy-place.jpg'; 
-import loveFairy from '../images/blog.jpg'
+import Button from './../components/Button';
+import fairyImage from '../assets/images/fairy-hero.jpg'; 
+import plantImage from '../assets/images/plant.jpg'; 
+import fairyPlace from '../assets/images/fairy-place.jpg'; 
+import loveFairy from '../assets/images/blog.jpg'
 
 const HomePage = () => {
   return (

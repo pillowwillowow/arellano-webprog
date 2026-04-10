@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
-import bgImg from "../images/bug.jpg";
+import bgImg from "../assets/images/bug.jpg";
 
 {/* Enhancement 3: Make a design for the NotFoundPage. */}
 

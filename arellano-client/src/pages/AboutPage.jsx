@@ -1,9 +1,9 @@
 import Button from "../components/Button";
-import fairyImage from "../images/moodboard.jpg"; 
-import beatopia from "../images/beatopia.jpg"; 
-import moodboard2 from "../images/moodboard2.jpg";
-import moodboard3 from "../images/moodboard3.jpg";
-import bloom from "../images/bloom.jpg";
+import fairyImage from "../assets/images/moodboard.jpg"; 
+import beatopia from "../assets/images/beatopia.jpg"; 
+import moodboard2 from "../assets/images/moodboard2.jpg";
+import moodboard3 from "../assets/images/moodboard3.jpg";
+import bloom from "../assets/images/bloom.jpg";
 
 const AboutPage = () => {
   return (
