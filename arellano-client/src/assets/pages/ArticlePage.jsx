@@ -8,7 +8,7 @@ function ArticlePage() {
 
     if (!article) {
         return (
-            <div className="flex w-full flex-col gap-6">
+            <div className="flex w-full flex-col gap-6 min-h-[60vh] px-6">
                 <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
                    <div className="mx-auto max-w-3xl">
                     <h1 className="text-3xl font-bold text-zinc-900">Article Not Found</h1>
@@ -60,6 +60,9 @@ function ArticlePage() {
                         </p>
                       ))}
                     </div>
+                    <div className="mx-auto max-w-3xl mt-5 border-t-2 border-zinc-900 pt-6">
+                    <Button to="/articles" variant="primary">← Back to Articles</Button>
+                  </div>
                   </section>
                 </div>
               );

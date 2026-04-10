@@ -41,5 +41,4 @@ const routes = [
     </>
   );
 }
-
   export default App;

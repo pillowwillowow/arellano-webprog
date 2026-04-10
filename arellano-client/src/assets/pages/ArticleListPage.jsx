@@ -27,7 +27,6 @@ const ArticleListPage = () => {
                     </p>
                     <h2 className="text-2xl font-bold text-zinc-900">᭄᭡ Fairy-like Plants to Have  ᭄</h2>
                 </div>
-
                 <ArticleList articles={articles} />
             </section>
             </div>
