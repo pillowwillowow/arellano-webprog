@@ -88,7 +88,7 @@ const HomePage = () => {
             <img src={plantImage} alt="Mystical Plant" className="h-50 w-full object-cover rounded-xl"/>
             <h3 className="mt-3 text-lg font-semibold text-zinc-900">Whispering Fern</h3>
             <p className="mt-3 text-sm leading-6 text-zinc-600">
-              A rare fern that communicates with forest fairies at twilight.
+              A rare fern that communicates with forest fairies at twilight and glows softly in the moonlight.
             </p>
             <Button className="mt-4" variant="primary">View More</Button>
           </article>
