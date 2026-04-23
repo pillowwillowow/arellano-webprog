@@ -1,8 +1,8 @@
-import Button from './../components/Button';
-import fairyImage from '../assets/images/fairy-hero.jpg'; 
-import plantImage from '../assets/images/plant.jpg'; 
-import fairyPlace from '../assets/images/fairy-place.jpg'; 
-import loveFairy from '../assets/images/blog.jpg'
+import Button from "../../components/Button";
+import fairyImage from "../../assets/images/fairy-hero.jpg";
+import plantImage from "../../assets/images/plant.jpg";
+import fairyPlace from "../../assets/images/fairy-place.jpg";
+import loveFairy from "../../assets/images/blog.jpg";
 
 const HomePage = () => {
   return (
@@ -26,7 +26,7 @@ const HomePage = () => {
             </div>
           </div>
 
-          <div className="rounded-3xl border-dashed border-zinc-300 bg-zinc-100 p-6">
+          <div className="rounded-3xl border-zinc-300">
             <img src={loveFairy} alt="love Fairy" className="h-80 w-full object-cover rounded-2xl"/>
           </div>
 
@@ -34,30 +34,42 @@ const HomePage = () => {
       </section>
 
       {/* Revise and Expand the content | Enhancement 2:DONE ꩜ */} 
-      <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <section className="border-y-2 border-zinc-900 bg-[#bac193] px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="mb-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-800">
             Fairyland Stats
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-zinc-900">Quick Overview</h2>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-5">
+          <div className="rounded-3xl border border-zinc-900 bg-zinc-100 p-5
+            shadow-[0_0_10px_rgba(107,135,84,0.4),0_0_30px_rgba(107,135,84,0.3)]
+            hover:shadow-[0_0_20px_rgba(107,135,84,0.7),0_0_50px_rgba(107,135,84,0.5)]
+            transition-all duration-300 hover:-translate-y-1 hover:scale-[1.04]">
             <p className="text-2xl font-bold text-zinc-900">24</p>
             <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-500">Magical Plants</p>
           </div>
-          <div className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-5">
+          <div className="rounded-3xl border border-zinc-900 bg-[#dfb2b9] p-5
+            shadow-[0_0_10px_rgba(107,135,84,0.4),0_0_30px_rgba(107,135,84,0.3)]
+            hover:shadow-[0_0_20px_rgba(107,135,84,0.7),0_0_50px_rgba(107,135,84,0.5)]
+            transition-all duration-300 hover:-translate-y-1 hover:scale-[1.04]">
             <p className="text-2xl font-bold text-zinc-900">12</p>
-            <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-500">Fairy Species</p>
+            <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-900">Fairy Species</p>
           </div>
-          <div className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-5">
+          <div className="rounded-3xl border border-zinc-900 bg-zinc-100 p-5
+            shadow-[0_0_10px_rgba(107,135,84,0.4),0_0_30px_rgba(107,135,84,0.3)]
+            hover:shadow-[0_0_20px_rgba(107,135,84,0.7),0_0_50px_rgba(107,135,84,0.5)]
+            transition-all duration-300 hover:-translate-y-1 hover:scale-[1.04]">
             <p className="text-2xl font-bold text-zinc-900">8</p>
             <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-500">Mystical Locations</p>
           </div>
-          <div className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-5">
+          <div className="rounded-3xl border border-zinc-900 bg-[#dfb2b9] p-5
+            shadow-[0_0_10px_rgba(107,135,84,0.4),0_0_30px_rgba(107,135,84,0.3)]
+            hover:shadow-[0_0_20px_rgba(107,135,84,0.7),0_0_50px_rgba(107,135,84,0.5)]
+            transition-all duration-300 hover:-translate-y-1 hover:scale-[1.04]">
             <p className="text-2xl font-bold text-zinc-900">5</p>
-            <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-500">Enchanted Objects</p>
+            <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-900">Enchanted Objects</p>
           </div>
         </div>
       </section>

@@ -2,20 +2,19 @@ import { NavLink } from "react-router-dom";
 import bgImage from "../assets/images/whip.jpg";
 import logo from "../assets/images/glow.png";
 
-const links = [
+const mainLinks = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
   { label: "Articles", to: "/articles" },
 ];
 
-  {/* Navigation bar design | Enhancement 1:DONE ꩜ */}
-  const navLinkClassName = ({ isActive }) =>
+const navLinkClassName = ({ isActive }) =>
   [
     "rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] transition-all duration-300",
     isActive
-      ? "border-yellow-500 bg-gray-300 text-black shadow-[0_0_10px_rgba(253,224,71,0.7)] hover:shadow-[0_0_20px_rgba(253,224,71,0.9)]"
-      : "border-transparent bg-yellow-200 text-black hover:bg-gray-300 hover:border-gray-200 hover:shadow-[0_0_10px_rgba(253,224,71,0.7)]",
-  ]
+      ? "border-yellow-500 bg-gray-300 text-black shadow-[0_0_10px_rgba(253,224,71,0.7)]"
+      : "border-transparent bg-yellow-200 text-black hover:bg-gray-300",
+  ].join(" ");
 
 const NavBar = () => {
   return (
@@ -27,16 +26,18 @@ const NavBar = () => {
         backgroundPosition: "center",
       }}
     >
-      {/* Create own logo | Enhancement 3:DONE ꩜ */}
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
+
+        {/* Logo */}
         <NavLink to="/" className="flex items-center gap-3">
-          <div className="space-y-0.5">
-            <img src={logo} alt="Logo" className="h-12 w-auto object-contain" />
-          </div>
+          <img src={logo} alt="Logo" className="h-12 w-auto object-contain" />
         </NavLink>
 
-        <nav className="hidden items-center gap-2 md:flex">
-          {links.map((link) => (
+        {/* Navigation */}
+        <nav className="hidden md:flex items-center gap-2">
+
+          {/* Main Links */}
+          {mainLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
@@ -46,7 +47,26 @@ const NavBar = () => {
               {link.label}
             </NavLink>
           ))}
+
+          <span className="text-white/100">✦</span>
+
+          {/*Enhancement 3: Add access point (button or link) on the NavBar. | DONE*/}
+          <NavLink
+            to="/auth/signin"
+            className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white bg-white/10 px-3 py-1 rounded-full hover:bg-white hover:text-[#6B8754] transition"
+          >
+            Sign In
+          </NavLink>
+
+          <NavLink
+            to="/auth/signup"
+            className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white bg-white/10 px-3 py-1 rounded-full hover:bg-white hover:text-[#6B8754] transition"
+          >
+            Sign Up
+          </NavLink>
+
         </nav>
+
       </div>
     </header>
   );

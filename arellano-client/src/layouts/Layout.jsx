@@ -1,10 +1,10 @@
 import { Outlet, Link } from "react-router-dom";
-import NavBar from "./NavBar";
+import NavBar from "../components/NavBar";
 import logoImg from "../assets/images/logo.png"; 
 
 const Layout = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-zinc-100 text-zinc-900">
+    <div className="min-h-screen flex flex-col bg-[#bac193] text-zinc-900">
       
       <NavBar />
       <main className="flex-1 pt-20 pb-16">

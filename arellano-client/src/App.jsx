@@ -1,12 +1,18 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 // HomePage Structure
-import Layout from './components/Layout';
-import AboutPage from './pages/AboutPage';
-import ArticleListPage from './pages/ArticleListPage';
-import ArticlePage from './pages/ArticlePage';
-import HomePage from './pages/HomePage';
-import NotFoundPage from './pages/NotFoundPage';
+import Layout from './layouts/Layout';
+import AboutPage from './pages/LandingPages/AboutPage';
+import ArticleListPage from './pages/LandingPages/ArticleListPage';
+import ArticlePage from './pages/LandingPages/ArticlePage';
+import HomePage from './pages/LandingPages/HomePage';
 
+
+// Auth Pages Structure
+import AuthLayout from './layouts/AuthLayout';
+import SignInPage from './pages/AuthPages/SigninPage';
+import SignUpPage from './pages/AuthPages/SignUpPage';
+
+import NotFoundPage from './pages/NotFoundPage';
 
 const routes = [
     {
@@ -30,6 +36,22 @@ const routes = [
             element: <ArticlePage />},
       ],
     },
+
+    {
+    path: "auth/",
+    element: <AuthLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        path: "signin",
+        element: <SignInPage />,
+      },
+      {
+        path: "signup",
+        element: <SignUpPage />,
+      }
+    ],
+  },
   ];
 
   const router = createBrowserRouter(routes);
