@@ -7,7 +7,7 @@ import bloom from "../../assets/images/bloom.jpg";
 
 const AboutPage = () => {
   return (
-    <div className="flex w-full bg-[#bac193] flex-col gap-6 ">
+    <div className="flex w-full bg-[#6B8754] flex-col gap-6 ">
       <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
           <div className="rounded-3xl border-dashed border-zinc-300 bg-zinc-100 p-6">
