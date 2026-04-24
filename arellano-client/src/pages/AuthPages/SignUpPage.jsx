@@ -11,7 +11,7 @@ const SignUpPage = () => {
     <>
       <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Sign Up</h1>
       <p className="mt-3 text-sm leading-6 text-zinc-600">
-        Create a store account for faster checkout, order updates, and pickup details.
+        Create your account and step into a world of enchantment. Your magical journey begins here!
       </p>
 
       <form className="mt-8 space-y-5">
