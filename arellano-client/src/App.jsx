@@ -15,6 +15,7 @@ import SignInPage from './pages/AuthPages/SigninPage';
 import SignUpPage from './pages/AuthPages/SignUpPage';
 
 import NotFoundPage from './pages/NotFoundPage';
+
 import DashLayout from './layouts/DashLayout';
 
 const routes = [
@@ -54,7 +55,8 @@ const routes = [
         element: <SignUpPage />,
       }
     ],
-
+  },
+  {
     path: "dashboard",
     element: <DashLayout />,
     errorElement: <NotFoundPage />,
