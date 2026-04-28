@@ -5,7 +5,9 @@ import AboutPage from './pages/LandingPages/AboutPage';
 import ArticleListPage from './pages/LandingPages/ArticleListPage';
 import ArticlePage from './pages/LandingPages/ArticlePage';
 import HomePage from './pages/LandingPages/HomePage';
-
+import DashboardPage from "./pages/DashboardPages/DashboardPage";
+import ReportsPage from "./pages/DashboardPages/ReportsPage";
+import UsersPage from "./pages/DashboardPages/UsersPage";
 
 // Auth Pages Structure
 import AuthLayout from './layouts/AuthLayout';
@@ -13,6 +15,7 @@ import SignInPage from './pages/AuthPages/SigninPage';
 import SignUpPage from './pages/AuthPages/SignUpPage';
 
 import NotFoundPage from './pages/NotFoundPage';
+import DashLayout from './layouts/DashLayout';
 
 const routes = [
     {
@@ -51,8 +54,28 @@ const routes = [
         element: <SignUpPage />,
       }
     ],
-  },
-  ];
+
+    path: "dashboard",
+    element: <DashLayout />,
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        element: <DashboardPage />,
+      },
+      {
+        path: "reports",
+        element: <ReportsPage />,
+      },
+      {
+        path: "users",
+        element: <UsersPage />,
+      },
+    ],
+  }
+];
+
+
 
   const router = createBrowserRouter(routes);
 
