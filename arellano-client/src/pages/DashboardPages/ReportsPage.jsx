@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
+{/*Enhancement 2: Create and design a ReportsPage for [Charts or Data Visualization]. | DONE */}
 const Tableau10 = [
   '#fcfdff',
   '#87ffef',
@@ -14,8 +15,6 @@ const Tableau10 = [
   'rgb(0, 0, 0)',
   '#ffffff',
 ];
-
-
 
 const chartsParams = {
   height: 300,

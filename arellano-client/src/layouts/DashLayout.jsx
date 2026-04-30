@@ -22,7 +22,6 @@ import PeopleIcon from '@mui/icons-material/People';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import Button from '@mui/material/Button';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import ArticleIcon from '@mui/icons-material/Article';
 
 const drawerWidth = 240;
 const dashboardNavItems = [

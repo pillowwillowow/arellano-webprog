@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 
+{/*Enhancement 3: Create for the UsersPage for [User List or Table for Users details]. | DONE*/}
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
   {
@@ -46,7 +47,16 @@ const rows = [
 
 export default function DataGridDemo() {
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box sx= {{
+        height: 420,
+        width: '100%',
+        borderRadius: 4,
+        boxShadow: '0 8px 30px rgb(8, 4, 8)',
+        border: '1px solid rgba(255,255,255,0.3)',
+        overflow: 'hidden',
+      }}
+    >
+
       <DataGrid
         rows={rows}
         columns={columns}
@@ -60,6 +70,17 @@ export default function DataGridDemo() {
         pageSizeOptions={[5]}
         checkboxSelection
         disableRowSelectionOnClick
+
+        sx={{
+          border: 'none',
+          fontFamily: "'Lexend', sans-serif",
+          '& .MuiDataGrid-columnHeaders': {
+            backgroundColor: 'rgba(167,139,250,0.2)',
+            color: '#5b21b6',
+            fontWeight: 'bold',
+            borderBottom: 'none',
+          },
+        }}
       />
     </Box>
   );
