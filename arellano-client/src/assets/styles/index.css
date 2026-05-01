@@ -1,1 +1,63 @@
 @import "tailwindcss";
+
+
+/* 🌿 Fairy Theme Colors */
+:root {
+  /* Primary */
+  --color-primary: #6B8754;
+  --color-primary-dark: #13220d;
+  --color-primary-light: #A3B18A;
+
+  /* Accents */
+  --color-accent-pink: #dfb2b9;
+  --color-accent-rose: #e48c9d;
+  --color-accent-yellow: #fde047;
+
+  /* Neutrals */
+  --color-white: #ffffff;
+  --color-off-white: #fafafa;
+  --color-light-gray: #e4e4e7;
+  --color-gray: #a1a1aa;
+  --color-dark-gray: #3f3f46;
+  --color-black: #18181b;
+
+  /* Backgrounds */
+  --color-bg-main: #6B8754;
+  --color-bg-soft: #fafafa;
+  --color-bg-card: #ffffff;
+  --color-bg-muted: #f4f4f5;
+}
+
+/* ✨ Glow Effects */
+.glow-primary {
+  box-shadow: 0 0 25px rgba(107,135,84,0.6);
+}
+
+.glow-pink {
+  box-shadow: 0 0 25px rgba(223,178,185,0.6);
+}
+
+.glow-yellow {
+  box-shadow: 0 0 25px rgba(253,224,71,0.7);
+}
+
+.glow-white {
+  box-shadow: 0 0 20px rgba(255,255,255,0.8);
+}
+
+/* 🌿 Smooth hover glow */
+.hover-glow:hover {
+  box-shadow: 0 0 35px rgba(107,135,84,0.8);
+  transform: translateY(-3px) scale(1.02);
+  transition: all 0.3s ease;
+}
+
+/* 🧚 Subtle floating animation */
+.floaty {
+  animation: floaty 3s ease-in-out infinite;
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}

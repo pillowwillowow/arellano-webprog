@@ -1,8 +1,27 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import NavBar from "../components/NavBar";
-import logoImg from "../assets/images/logo.png"; 
+import logoImg from "../assets/images/logo.png";
+import { useEffect } from "react";
 
 const Layout = () => {
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  useEffect(() => {
+    if (pathname === "/" || pathname === "") {
+      document.title = "cy.dev";
+    } else if (pathname.includes("about")) {
+      document.title = "About | cy.dev";
+    } else if (pathname.includes("articles")) {
+      document.title = "Articles | cy.dev";
+    } else if (pathname.includes("signin")) {
+      document.title = "Sign In | cy.dev";
+    } else if (pathname.includes("signup")) {
+      document.title = "Sign Up | cy.dev";
+    } else {
+      document.title = "cy.dev";
+    }
+  }, [pathname]);
   return (
     <div className="min-h-screen flex flex-col bg-[#bac193] text-zinc-900">
       

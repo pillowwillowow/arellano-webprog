@@ -1,0 +1,80 @@
+[
+    {
+        "firstName": "Alicia",
+        "lastName": "Reyes",
+        "age": "29",
+        "gender": "female",
+        "contactNumber": "09171234567",
+        "email": "alicia.reyes@robles.dev",
+        "role": "admin",
+        "username": "aliciareyes",
+        "password": "Alicia123!",
+        "address": "Sampaloc, Manila, Metro Manila",
+        "isActive": true
+    },
+    {
+        "firstName": "Brandon",
+        "lastName": "Garcia",
+        "age": "34",  
+        "gender": "male",
+        "contactNumber": "09181234567",
+        "email": "brandon.garcia@robles.dev",
+        "role": "editor",
+        "username": "brandomgarcia",
+        "password": "Brandon123!",
+        "address": "Mandaluyong, Manila, Metro Manila",
+        "isActive": true
+    },
+    {
+        "firstName": "Cassandra",
+        "lastName": "Lopez",
+        "age": "27",      
+        "gender": "female",
+        "contactNumber": "09191234567", 
+        "email": "cassandra.lopez@robles.dev",
+        "role": "editor",
+        "username": "cassandralopez",
+        "password": "Cassandra123!",
+        "address": "Quezon City, Metro Manila",
+        "isActive": true
+    },
+    {
+        "firstName": "David",
+        "lastName": "Martinez",
+        "age": "31",
+        "gender": "male",
+        "contactNumber": "09201234567",
+        "email": "david.martinez@robles.dev",
+        "role": "admin",
+        "username": "davidmartinez",
+        "password": "David123!",
+        "address": "Makati, Manila, Metro Manila",
+        "isActive": true
+    },
+    {
+        "firstName": "Emily",
+        "lastName": "Santos",
+        "age": "26",
+        "gender": "other",
+        "contactNumber": "09211234567",
+        "email": "emily.santos@robles.dev",
+        "role": "viewer",
+        "username": "emilysantos",
+        "password": "Emily123!",
+        "address": "Taguig, Metro Manila",
+        "isActive": true
+    },
+    {
+        "firstName": "Frank",
+        "lastName": "Dela Cruz",
+        "age": "28",  
+        "gender": "male",
+        "contactNumber": "09221234567", 
+        "email": "frankdelacruz@robles.dev",
+        "role": "viewer",
+        "username": "frankdelacruz",
+        "password": "Frank123!",
+        "address": "Pasig, Metro Manila",
+        "isActive": true
+    }
+]

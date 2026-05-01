@@ -1,7 +1,7 @@
-import lotusImg from "./images/lotus.jpg";
-import orchidImg from "./images/orchid.jpg";
-import bluebellImg from "./images/bluebell.jpg";
-import moonflowerImg from "./images/moonflower.jpg";
+import lotusImg from "../assets/images/lotus.jpg";
+import orchidImg from "../assets/images/orchid.jpg";
+import bluebellImg from "../assets/images/bluebell.jpg";
+import moonflowerImg from "../assets/images/moonflower.jpg";
 
 {/* Enhancement 2: Make your own article-content.js. */}
 const articles = [

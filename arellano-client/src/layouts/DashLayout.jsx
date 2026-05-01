@@ -47,7 +47,7 @@ const dashboardNavItems = [
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
-  background: "linear-gradient(180deg, #ffb5ff, #5f575b)",
+  background: "linear-gradient(180deg, #6B8754, #13220d)",
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
@@ -56,7 +56,7 @@ const openedMixin = (theme) => ({
 });
 
 const closedMixin = (theme) => ({
-    background: "linear-gradient(180deg, #ffb5ff, #5f575b)",
+    background: "linear-gradient(180deg, #6B8754, #13220d)",
     transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -89,7 +89,7 @@ const AppBar = styled(MuiAppBar, {
         duration: theme.transitions.duration.leavingScreen,
     }),
 
-        background: "linear-gradient(90deg, #726d79, #c43c80)", 
+        background: "linear-gradient(180deg, #6B8754, #13220d)", 
         color: "#fff",
         
     ...(open && {
@@ -112,12 +112,12 @@ const Drawer = styled(MuiDrawer, {
     ...(open && {
         ...openedMixin(theme),
         '& .MuiDrawer-paper': openedMixin(theme),
-        background: "linear-gradient(180deg, #ffb5ff, #5f575b)",
+        background: "linear-gradient(180deg, #6B8754, #13220d)",
     }),
     ...(!open && {
         ...closedMixin(theme),
         '& .MuiDrawer-paper': closedMixin(theme),
-        background: "linear-gradient(180deg, #ffb5ff, #5f575b)",
+        background: "linear-gradient(180deg, #6B8754, #13220d)",
     }),
 }));
 
@@ -272,7 +272,7 @@ const DashLayout = () => {
                     fontFamily: "'Lexend', sans-serif",
                     },
 
-                    background: "linear-gradient(135deg, #dad6d6, #7e5b6d)",
+                    background: "linear-gradient(135deg, #dfb2b9, #13220d)",
                     minHeight: "100vh",
                 }}
                 >
