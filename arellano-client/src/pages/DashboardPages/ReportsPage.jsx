@@ -13,47 +13,6 @@ import PrintIcon from "@mui/icons-material/Print";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
 
-const columns = [
-  { field: "id", headerName: "ID", width: 80 },
-  {
-    field: "firstName",
-    headerName: "First name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "lastName",
-    headerName: "Last name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "age",
-    headerName: "Age",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    sortable: false,
-    width: 160,
-      valueGetter: (value, row) => `${row.firstName || ""} ${row.lastName || ""}`,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35, category: "sales" },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42, category: "users" },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45, category: "finance" },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16, category: "sales" },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: 22, category: "users" },
-  { id: 6, lastName: "Melisandre", firstName: "Melisandre", age: 150, category: "finance" },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44, category: "sales" },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36, category: "users" },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65, category: "finance" },
-];
-
 const clubs = [
   'Arsenal','Liverpool','Man Utd','Tottenham','Everton','Sunderland',
   'Newcastle','Nottingham Forest','Leeds','Man City','West Ham',
@@ -72,8 +31,6 @@ const clubColors = [
   '#CC0000','#034694','#670E36','#FDB913','#1B458F','#E30613',
   '#DA291C','#0057B8',
 ];
-
-
 
 const ReportsPage = () => {
   const printRef = useRef(null);
@@ -118,12 +75,6 @@ const ReportsPage = () => {
         }
           html, body {
           height: auto;
-        }
-
-        .report-shell {
-          transform: scale(0.75);   
-          transform-origin: top left;
-          width: 133%;             
         }
 
         .report-shell {

@@ -300,6 +300,13 @@
         minWidth: 110,
         valueGetter: (value, row) => labelize(row.gender)
       },
+
+      {
+        field: 'contactNumber',
+        headerName: 'Contact Number',
+        minWidth: 110,
+        valueGetter: (value, row) => labelize(row.contactNumber)
+      },
       {field: 'email', 
         headerName: 'Email Address', 
         minWidth: 200,
