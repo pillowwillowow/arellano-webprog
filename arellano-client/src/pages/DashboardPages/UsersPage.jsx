@@ -376,23 +376,23 @@
         }}
       >
           <Typography variant="h4" sx={{ py: 2, fontFamily: "'Lexend', sans-serif", fontWeight: 600, color: '#13220d' }}>
-            Users
+            Users ˘͈ᵕ˘͈⸝*
           </Typography>
           <Button
             variant="contained"
             onClick={openAddModal}
             sx={{
-              fontSize: '16px',
+              fontSize: '18px',
               fontFamily: "'Lexend', sans-serif",
               textTransform: 'none',
               px: 3,
               py: 1,
-              borderRadius: 4,
+              borderRadius: 3,
               width: { xs: '100%', sm: 'auto' },
 
-              background: "#13220d",
+              background: "#e48c9d",
 
-              color: '#fff',
+              color: '#13220d',
 
               transition: 'all 0.2s ease',
               '&:hover': {
@@ -413,6 +413,8 @@
           {loadError}
         </Alert>
       )}
+
+       {/*Enhancement 2: Create and design a search and filter. | DONE */}
 
       <Paper sx={{ background: "#6B8754", borderRadius: 4, p: {xs: 1.5, sm: 2}, minWidth: 0, overflowX: 'hidden' }}>
         {users.length ? (

@@ -89,7 +89,7 @@ const AppBar = styled(MuiAppBar, {
         duration: theme.transitions.duration.leavingScreen,
     }),
 
-        background: "linear-gradient(180deg, #6B8754, #13220d)", 
+        background: "linear-gradient(180deg, #6B8754, #29471e)", 
         color: "#fff",
         
     ...(open && {
@@ -113,6 +113,7 @@ const Drawer = styled(MuiDrawer, {
         ...openedMixin(theme),
         '& .MuiDrawer-paper': openedMixin(theme),
         background: "linear-gradient(180deg, #6B8754, #13220d)",
+        color: "#fff",
     }),
     ...(!open && {
         ...closedMixin(theme),
@@ -213,7 +214,7 @@ const DashLayout = () => {
                                 inputProps={{ 'aria-label': 'search' }}
                             />
                         </Search>
-                        <Button color="inherit" onClick={handleDrawerLogout}>
+                        <Button color="inherit" sx={{fontFamily: "'lexend', sans-serif", fontSize: 16}}onClick={handleDrawerLogout}>
                             Logout
                         </Button>
                     </Toolbar>
@@ -254,7 +255,7 @@ const DashLayout = () => {
                                     </ListItemIcon>
                                     <ListItemText 
                                         primary={label} 
-                                        sx={{ opacity: open ? 1 : 0, color: "#050505" }}
+                                        sx={{ opacity: open ? 1 : 0,  color: "#fff" }}
                                     /> 
                                 </ListItemButton>
                             </ListItem>

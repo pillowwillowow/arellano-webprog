@@ -6,11 +6,9 @@ import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { BarChart } from '@mui/x-charts/BarChart';
-import MenuItem from "@mui/material/MenuItem";
 import { LineChart } from '@mui/x-charts/LineChart';
 import { Gauge } from "@mui/x-charts/Gauge";
 import { PieChart } from "@mui/x-charts/PieChart";
-import { DataGrid } from "@mui/x-data-grid";
 import PrintIcon from "@mui/icons-material/Print";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
@@ -234,7 +232,7 @@ const ReportsPage = () => {
               fontWeight: 500,
             }}
           >
-            Reports
+            Reports ⋆‧°𓏲ּ𝄢⋆˚꩜｡
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, fontFamily: "'Lexend', sans-serif", textAlign: "center"}}>
             Analytics overview with charts, data, and export features.
@@ -319,7 +317,7 @@ const ReportsPage = () => {
       </Stack>
     </Stack>
             
-
+      {/*Enhancement 1: Create and design a your printing pdf based on you Laboratory 5 ReportsPage design. | DONE */}
       {/* CONTENT */}
       <Stack ref={printRef} spacing={3}>
 
@@ -360,7 +358,6 @@ const ReportsPage = () => {
                 {
                   data: [15, 23, 18, 19, 13],
                   label: "Example Series",
-                  color: color,
                   showMark: true,
                 },
               ]}

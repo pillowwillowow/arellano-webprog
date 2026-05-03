@@ -8,7 +8,6 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-/* ------------------ TABLE DATA ------------------ */
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "firstName", headerName: "First Name", width: 150, editable: true },
@@ -25,18 +24,24 @@ const columns = [
 ];
 
 const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  { id: 1, firstName: "Beatrice", lastName: "Kristi", age: 23 },
+  { id: 2, firstName: "Claire", lastName: "Cottrill", age: 25 },
+  { id: 3, firstName: "Phoebe", lastName: "Bridgers", age: 30 },
+  { id: 4, firstName: "Mitski", lastName: "Miyawaki", age: 33 },
+  { id: 5, firstName: "Faye", lastName: "Webster", age: 26 },
+  { id: 6, firstName: "Daniel", lastName: "Caesar", age: 29 },
+  { id: 7, firstName: "Steve", lastName: "Lacy", age: 26 },
+  { id: 8, firstName: "Frank", lastName: "Ocean", age: 36 },
+  { id: 9, firstName: "Laufey", lastName: "Lin", age: 24 },
+  { id: 10, firstName: "Niki", lastName: "Zefanya", age: 25 },
+  { id: 11, firstName: "Keshi", lastName: "Ho", age: 29 },
+  { id: 12, firstName: "Sabrina", lastName: "Carpenter", age: 24 },
+  { id: 13, firstName: "Arlo", lastName: "Parks", age: 24 },
+  { id: 14, firstName: "Brent", lastName: "Faiyaz", age: 28 },
+  { id: 15, firstName: "Joji", lastName: "Miller", age: 31 },
 ];
 
-/* ------------------ CHART DATA ------------------ */
+
 const clubs = [
   "Arsenal","Liverpool","Man Utd","Tottenham","Everton","Sunderland",
   "Newcastle","Nottingham Forest","Leeds","Man City","West Ham",
@@ -75,9 +80,9 @@ function DashboardPage() {
       <Typography
         variant="h4"
         gutterBottom
-        sx={{ fontFamily: "'Lexend', sans-serif", fontWeight: 600 }}
+        sx={{ fontFamily: "'Lexend', sans-serif", fontWeight: 600, color: "#13220d", }}
       >
-        Dashboard
+        Dashboard Summary ˚˖𓍢ִ໋🧚🏻‍♀️₊
       </Typography>
       <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ mb: 3 }}>
         <Card
