@@ -310,6 +310,7 @@ const ReportsPage = () => {
                   data: [15, 23, 18, 19, 13],
                   label: "Example Series",
                   showMark: true,
+                  color: color
                 },
               ]}
               sx={{
