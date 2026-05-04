@@ -9,17 +9,17 @@ const Layout = () => {
 
   useEffect(() => {
     if (pathname === "/" || pathname === "") {
-      document.title = "cy.dev";
+      document.title = "arellano-client";
     } else if (pathname.includes("about")) {
-      document.title = "About | cy.dev";
+      document.title = "About | arellano-client";
     } else if (pathname.includes("articles")) {
-      document.title = "Articles | cy.dev";
+      document.title = "Articles | arellano-client";
     } else if (pathname.includes("signin")) {
-      document.title = "Sign In | cy.dev";
+      document.title = "Sign In | arellano-client";
     } else if (pathname.includes("signup")) {
-      document.title = "Sign Up | cy.dev";
+      document.title = "Sign Up account | arellano-client";
     } else {
-      document.title = "cy.dev";
+      document.title = "arellano-client";
     }
   }, [pathname]);
   return (
