@@ -8,6 +8,7 @@ import HomePage from './pages/LandingPages/HomePage';
 import DashboardPage from "./pages/DashboardPages/DashboardPage";
 import ReportsPage from "./pages/DashboardPages/ReportsPage";
 import UsersPage from "./pages/DashboardPages/UsersPage";
+import DashArticleListPage from './pages/DashboardPages/DashArticleListPage';
 
 // Auth Pages Structure
 import AuthLayout from './layouts/AuthLayout';
@@ -73,6 +74,10 @@ const routes = [
         path: "users",
         element: <UsersPage />,
       },
+      {
+        path: "dasharticles",
+        element: <DashArticleListPage />
+      }
     ],
   }
 ];

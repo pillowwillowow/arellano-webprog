@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import { loginUser } from "../../services/UserService";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const inputClasses =
   "mt-2 w-full rounded-xl border border-zinc-300 bg-zinc-100 px-4 py-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-[#6B8754] focus:bg-zinc-50 focus:shadow-[0_0_12px_rgba(107,135,84,0.35)]";
@@ -13,40 +14,60 @@ function SignInPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
 
-    try {
-      // Login API
-      const { data } = await loginUser({ email, password });
+    const handleLogin = async (e) => {
+      e.preventDefault();
 
-      // Save user data
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("firstName", data.firstName);
-      localStorage.setItem("type", data.type);
+      try {
+        setError("");
 
-      // Navigate to dashboard
-      navigate("/dashboard", {
-        state: {
+        // Call login API
+        const { data } = await loginUser({
+          email,
+          password,
+        });
+
+        console.log("Login successful:", data);
+
+        // BLOCK VIEWERS
+        if (data.role === "viewer") {
+          setError("Viewers are not allowed to log in.");
+          return;
+        }
+
+        // Save logged in user
+        const loggedInUser = {
+          token: data.token,
           firstName: data.firstName,
-          type: data.type,
-        },
-      });
-    } catch (error) {
-      console.error(
-        "Login failed:",
-        error.response?.data?.message || error.message
-      );
+          role: data.role,
+          email: data.email,
+        };
 
-      setError(
-        error.response?.data?.message ||
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify(loggedInUser)
+        );
+
+        localStorage.setItem("token", data.token);
+
+        // Navigate to dashboard
+        navigate("/dashboard");
+
+      } catch (err) {
+        console.error(
+          "Login failed:",
+          err.response?.data?.message || err.message
+        );
+
+        setError(
+          err.response?.data?.message ||
           "Login failed. Please try again."
-      );
-    }
-  };
+        );
+      }
+    };
 
   return (
     <>
@@ -59,59 +80,61 @@ function SignInPage() {
         journey through nature, stories, and glowing adventures.
       </p>
 
-      {/* Error Message */}
-      {error && (
+      <form onSubmit={handleLogin} className="mt-8 space-y-5">
+        <div>
+          <label className="text-sm font-medium" htmlFor='email'>Email</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="name@email.com"
+            className={inputClasses}
+          />
+          {error && (
         <div className="mt-6 rounded-2xl border border-red-300 bg-red-100 px-4 py-3 text-sm text-red-700 shadow-[0_0_10px_rgba(255,0,0,0.15)]">
           {error}
         </div>
       )}
-
-      <form onSubmit={handleLogin} className="mt-8 space-y-5">
-        {/* Email */}
-        <div>
-          <label
-            htmlFor="signin-email"
-            className="text-sm font-medium text-zinc-700"
-          >
-            Email Address
-          </label>
-
-          <input
-            id="signin-email"
-            type="email"
-            placeholder="student@email.com"
-            autoComplete="email"
-            className={inputClasses}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
         </div>
 
-        {/* Password */}
         <div>
-          <label
-            htmlFor="signin-password"
-            className="text-sm font-medium text-zinc-700"
-          >
+          <label className="text-sm font-medium" htmlFor='password'>
             Password
           </label>
 
-          <input
-            id="signin-password"
-            type="password"
-            placeholder="Password"
-            autoComplete="current-password"
-            className={inputClasses}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="relative mt-2">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="••••••••"
+              className={`${inputClasses} pr-12`} 
+            />
 
-          <p className="mt-2 text-xs leading-5 text-zinc-700">
-            Must contain at least 8 characters with letters, numbers, and
-            symbols.
-          </p>
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 flex items-center justify-center"
+            >
+              <span className="flex items-center justify-center w-full h-full leading-none">
+                {showPassword ? (
+                  <Visibility
+                    className="block"
+                    style={{ transform: 'translateY(2.5px)' }}
+                  />
+                ) : (
+                  <VisibilityOff
+                    className="block"
+                    style={{ transform: 'translateY(2.5px)' }}
+                  />
+                )}
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* Remember + Forgot */}

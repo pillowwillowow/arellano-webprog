@@ -1,202 +1,479 @@
-import { useEffect, useState } from "react";
-import {
-  Alert,
-  Box,
-  Button,
-  Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  IconButton,
-  InputAdornment,
-  MenuItem,
-  Paper,
-  Stack,
-  Switch,
-  TextField,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { DataGrid } from "@mui/x-data-grid";
-import usersSeed from "../../data/users.json";
+  import { useState, useEffect} from "react";
+  import {
+    Alert,
+    Box,
+    Button,
+    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    FormControlLabel,
+    IconButton,
+    InputAdornment,
+    MenuItem,
+    Paper,
+    Stack,
+    Switch,
+    TextField,
+    Typography,
+    useMediaQuery,
+  } from "@mui/material";
+  import { useTheme } from "@mui/material/styles";
+  import Visibility from "@mui/icons-material/Visibility";
+  import VisibilityOff from "@mui/icons-material/VisibilityOff";
+  import { DataGrid } from "@mui/x-data-grid";
+  import { useNavigate } from "react-router-dom";
+  import { fetchUsers, createUser, updateUser } from "../../services/UserService";
 
-const roles = ["admin", "editor", "viewer"];
-const genders = ["male", "female", "other"];
+  const roles = ['admin', 'editor', 'viewer'];
+  const genders = ['male', 'female', 'other'];
 
-const blankForm = {
-  firstName: "",
-  lastName: "",
-  age: "",
-  gender: "",
-  contactNumber: "",
-  email: "",
-  role: "",
-  userName: "",
-  password: "",
-  address: "",
-  isActive: true,
-};
+  const blankForm = {
+    firstName: '',
+    lastName: '',
+    age: '',
+    gender: '',
+    contactNumber: '',
+    email: '',
+    role: '',
+    userName: '',
+    password: '',
+    address: '',
+    isActive: true,
+  };
 
-const labelize = (value) =>
-  value ? `${value[0].toUpperCase()}${value.slice(1)}` : "";
+  const labelize = (value) => 
+    value ? `${value[0].toUpperCase()}${value.slice(1)}` : '';
 
-const UsersPage = () => {
-  
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const UsersPage = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState("");
+    const [open, setOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editUserId, setEditUserId] = useState(null);
+    const [form, setForm] = useState(blankForm);
+    const [errors, setErrors] = useState({}); 
+    const [showPassword, setShowPassword] = useState(false);
+    const [search, setSearch] = useState("");
+    const [roleFilter, setRoleFilter] = useState("");
+    const [genderFilter, setGenderFilter] = useState("");
+    const [statusFilter, setStatusFilter] = useState("");
 
-  const [users, setUsers] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editingId, setEditingId] = useState(null);
+    const navigate = useNavigate();
 
-  const [search, setSearch] = useState("");
-  const [roleFilter, setRoleFilter] = useState("");
-  const [genderFilter, setGenderFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+    const loggedInUser = JSON.parse(
+      localStorage.getItem("loggedInUser")
+    );
 
-  const [form, setForm] = useState(blankForm);
+    useEffect(() => {
+      // ONLY ADMIN CAN ACCESS USERS PAGE
+      if (!loggedInUser || loggedInUser.role !== "admin") {
+        navigate("/dashboard");
+      }
+    }, [loggedInUser, navigate]);
 
-  // Load users
-  useEffect(() => {
-    const mapped = usersSeed.map((u, i) => ({
-      id: u.id || i + 1,
-      ...u,
-      isActive: u.isActive ?? true,
-    }));
-    setUsers(mapped);
+    useEffect(() => {
+    loadUsers();
   }, []);
 
-  const openAdd = () => {
-    setForm(blankForm);
-    setEditingId(null);
-    setModalOpen(true);
+  const loadUsers = async () => {
+    try {
+      setLoading(true);
+
+      const { data } = await fetchUsers();
+
+        const formattedUsers =
+          (data?.users || []).map((user, index) => ({
+          id: user._id || index + 1,
+          firstName: user.firstName ?? "",
+          lastName: user.lastName ?? "",
+          age: user.age ?? "",
+          gender: user.gender ?? "",
+          contactNumber: user.contactNumber ?? "",
+          email: user.email ?? "",
+          role: user.role ?? "",
+          userName: user.userName ?? "",
+          password: user.password ?? "",
+          address: user.address ?? "",
+          isActive:
+            typeof user.isActive === "boolean"
+              ? user.isActive
+              : true,
+        }));
+
+      setUsers(formattedUsers);
+
+    } catch (error) {
+      console.error(error);
+      setLoadError("Error loading users.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const openEdit = (user) => {
-    setForm(user);
-    setEditingId(user.id);
-    setModalOpen(true);
-  };
+  const normalizedSearch = search.toLowerCase().trim();
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
+      user.firstName?.toLowerCase().includes(normalizedSearch) ||
+      user.lastName?.toLowerCase().includes(normalizedSearch) ||
+      user.email?.toLowerCase().includes(normalizedSearch) ||
+      user.userName?.toLowerCase().includes(normalizedSearch);
 
-const handleSave = () => {
-  if (editingId) {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === editingId
-          ? { ...u, ...form, id: editingId }
-          : u
-      )
-    );
-  } else {
-    setUsers((prev) => [
-      ...prev,
-      {
-        ...form,
-        id: prev.length
-          ? Math.max(...prev.map((u) => u.id)) + 1
-          : 1,
-      },
-    ]);
-  }
+    const matchesRole = roleFilter ? user.role === roleFilter : true;
+    const matchesGender = genderFilter ? user.gender === genderFilter : true;
 
-  setModalOpen(false);
-};
-
-  const toggleStatus = (id) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === id ? { ...u, isActive: !u.isActive } : u
-      )
-    );
-  };
-
-  // FILTERS
-  const filteredUsers = users.filter((u) => {
-    const matchSearch =
-      u.firstName?.toLowerCase().includes(search.toLowerCase()) ||
-      u.lastName?.toLowerCase().includes(search.toLowerCase()) ||
-      u.email?.toLowerCase().includes(search.toLowerCase());
-
-    const matchRole = roleFilter ? u.role === roleFilter : true;
-    const matchGender = genderFilter ? u.gender === genderFilter : true;
-    const matchStatus =
+    const matchesStatus =
       statusFilter === "active"
-        ? u.isActive
+        ? user.isActive
         : statusFilter === "inactive"
-        ? !u.isActive
+        ? !user.isActive
         : true;
 
-    return matchSearch && matchRole && matchGender && matchStatus;
+    return matchesSearch && matchesRole && matchesGender && matchesStatus;
   });
 
-  const columns = [
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      valueGetter: (_, row) => `${row.firstName} ${row.lastName}`,
-    },
-    { field: "age", headerName: "Age", width: 90 },
-    {
-      field: "gender",
-      headerName: "Gender",
-      valueGetter: (_, row) => labelize(row.gender),
-    },
-    { field: "email", headerName: "Email", flex: 1 },
+    const resetForm = () => {
+      setForm({ ...blankForm });
+      setErrors({});
+    };
+
+    const handleEdit = (user) => {
+      setForm({
+        ...user,
+        password: "",
+      });
+
+      setEditUserId(user.id);
+      setIsEditing(true);
+      setErrors({});
+      setOpen(true);
+    };
+
+    const openAddModal = () => {
+    setForm(blankForm);
+    setIsEditing(false);
+    setEditUserId(null);
+    setOpen(true);
+  };
+
+    const closeModal = () => {
+      setOpen(false);
+      setIsEditing(false);
+      setEditUserId(null);
+      setShowPassword(false);
+      resetForm();
+    };
+
+    const handleChange = ({ target: { name, value, checked, type } }) => {
+      setForm((prev) => ({
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value,
+      }));
+    };
+
+    const validate = () => {
+      const nextErrors = {};
+      const email = form.email.trim().toLowerCase();
+      const userName = form.userName.trim();
+
+      [
+        ['firstName', 'First Name'],
+        ['lastName', 'Last Name'],
+        ['age', 'Age'],
+        ['gender', 'Gender'],
+        ['contactNumber', 'Contact Number'],
+        ['email', 'Email'],
+        ['role', 'Role'],
+        ['userName', 'Username'],
+        ['password', 'Password'],
+        ['address', 'Address'],
+      ].forEach(([key, label]) => {
+        if (!form[key] || String(form[key]).trim() === '') {
+          nextErrors[key] = `${label} is required.`;
+        }
+      });
+
+      if (
+        !nextErrors.email &&
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+      ) {
+        nextErrors.email = 'Enter a valid email address.';
+      }
+
+      if (
+        !nextErrors.email &&
+        users.some(
+          (user) =>
+             user.id !== editUserId &&
+            user.email.trim().toLowerCase() === email
+        )
+      ) {
+        nextErrors.email = 'Email already exists.';
+      }
+      if (
+        !nextErrors.userName &&
+        users.some(
+          (user) =>
+             user.id !== editUserId &&
+            user.userName.trim().toLowerCase() === userName.toLowerCase()
+        )
+      ) {
+        nextErrors.userName = 'Username already exists.';
+      }
+
+      // PASSWORD: at least 8 characters
+      if (!nextErrors.password && form.password.trim().length < 8) {
+        nextErrors.password = 'Password must be at least 8 characters.';
+      }
+
+      // CONTACT NUMBER: must be exactly 11 digits
+      if (
+        !nextErrors.contactNumber &&
+        !/^\d{11}$/.test(form.contactNumber.trim())
+      ) {
+        nextErrors.contactNumber = 'Contact number must be exactly 11 digits.';
+      }
+
+      // AGE: numbers only
+      if (
+        !nextErrors.age &&
+        !/^\d+$/.test(form.age.trim())
+      ) {
+        nextErrors.age = 'Age must be a number only.';
+      }
+
+      // USERNAME: no spaces allowed
+      if (
+        !nextErrors.userName &&
+        /\s/.test(form.userName)
+      ) {
+        nextErrors.userName = 'Username must not contain spaces.';
+      }
+
+      return nextErrors;
+    };
+
+    const handleSaveUser = async (event) => {
+      event.preventDefault();
+
+      const nextErrors = validate();
+
+      if (Object.keys(nextErrors).length) {
+        setErrors(nextErrors);
+        return;
+      }
+
+      const userData = {
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        age: form.age.trim(),
+        gender: form.gender.trim(),
+        contactNumber: form.contactNumber.trim(),
+        email: form.email.trim(),
+        role: form.role.trim(),
+        userName: form.userName.trim(),
+        password: form.password.trim(),
+        address: form.address.trim(),
+        isActive: form.isActive,
+      };
+
+        try {
+          if (isEditing) {
+
+            await updateUser(editUserId, userData);
+
+          } else {
+
+            await createUser(userData);
+
+          }
+
+          await loadUsers();
+          closeModal();
+
+        } catch (error) {
+          console.error("Error saving user:", error);
+        }
+    };
+
+
+    const handleToggleActive = async (id, isActive) => {
+      try {
+
+        await updateUser(id, {
+          isActive: !isActive,
+        });
+
+        await loadUsers();
+
+      } catch (error) {
+        console.error("Error toggling status:", error);
+      }
+    };
+
+    const fieldProps = (name, label, extra = {}) => ({
+      name,
+      label,
+      value: form[name] ?? "",
+      onChange: handleChange,
+      error: Boolean(errors[name]),
+      helperText: errors[name],
+      fullWidth: true,
+      ...extra,
+    });
+
+    const columns = [
+      {field: 'id', headerName: 'ID', width: 80},
+      {
+        field: 'fullName',
+        headerName: 'Full Name',
+        flex: 1,
+        minWidth: 170,
+      valueGetter: (value, row) => `${row?.firstName ?? ""} ${row?.lastName ?? ""}`
+      },
+
+      {field: 'userName', headerName: 'Username', minWidth: 150},
+      {field: 'age', headerName: 'Age', minWidth: 90},
+      {
+        field: 'gender',
+        headerName: 'Gender',
+        minWidth: 110,
+        valueGetter: (value, row) => labelize(row.gender)
+      },
+
+      {
+        field: 'contactNumber',
+        headerName: 'Contact Number',
+        minWidth: 110,
+        valueGetter: (value, row) => labelize(row.contactNumber)
+      },
+      {field: 'email', 
+        headerName: 'Email Address', 
+        minWidth: 200,
+        valueGetter: (value, row) => row.email || "N/A",
+      },
 
     {
-      field: "status",
-      headerName: "Status",
-      renderCell: (params) => (
-        <Chip
-          label={params.row.isActive ? "Active" : "Inactive"}
-          color={params.row.isActive ? "success" : "default"}
-          size="small"
-        />
-      ),
-    },
+      field: 'status',
+      headerName: 'Status',
+      minWidth: 120,
+      renderCell: (params) => {
+        const isActive = params.row.isActive;
 
-    {
-      field: "actions",
-      headerName: "Actions",
-      renderCell: (params) => (
-        <Stack direction="row" spacing={1}>
-          <Button size="small" onClick={() => openEdit(params.row)}>
-            Edit
-          </Button>
-          <Button
+
+        return (
+          <Chip
             size="small"
-            color={params.row.isActive ? "error" : "success"}
-            onClick={() => toggleStatus(params.row.id)}
-          >
-            {params.row.isActive ? "Disable" : "Enable"}
-          </Button>
-        </Stack>
-      ),
+            label={isActive ? "Active" : "Inactive"}
+            sx={{
+              fontWeight: 600,
+              borderRadius: "8px",
+              px: 1,
+
+              backgroundColor: isActive ? "#e6f4ea" : "#f3f3f3",
+              color: isActive ? "#1b5e20" : "#555",
+
+              border: isActive ? "1px solid #6B8754" : "1px solid #ddd",
+            }}
+          />
+        );
+      },
     },
-  ];
+    {
+        field: 'actions',
+        headerName: 'Actions',
+        minWidth: 220,
+        sortable: false,
+        filterable: false,
+        renderCell: (params) => (
+          <Stack direction='row' spacing={1} sx={{ py: 0.5}}>
+            <Button size="small" variant="outlined" 
+            sx={{
+              textTransform: "none",
+              borderRadius: 2,
+              fontSize: "14px",
+              px: 2,
+              color: "#13220d",
+              border: "3px solid #e48c9d"
+            }}
+            onClick={() => handleEdit(params.row)}>
+              Edit
+            </Button>
+            <Button 
+              size="small"
+              variant="contained" 
+              color={params.row.isActive ? 'error' : 'success'} 
+              onClick={() =>
+              handleToggleActive(
+                params.row.id,
+                params.row.isActive
+              )
+            }
+            >
+              {params.row.isActive ? 'Deactivate' : 'Activate'}
+            </Button>
+          </Stack>
+        ),
+      },
+    ];
 
-  return (
-    <Box sx={{ p: 2 }}>
-      <Stack direction="row" justifyContent="space-between" mb={2}>
-        <Typography variant="h4">Users</Typography>
-        <Button variant="contained" onClick={openAdd}>
-          Add User
-        </Button>
-      </Stack>
+    return (
+      <Box sx={{ width: '100%', minWidth: 0 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 1,
+            flexWrap: 'wrap',
+        }}
+      >
+          <Typography variant="h4" sx={{ py: 2, fontFamily: "'Lexend', sans-serif", fontWeight: 600, color: '#13220d' }}>
+            Users ˘͈ᵕ˘͈⸝*
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={openAddModal}
+            sx={{
+              fontSize: '18px',
+              fontFamily: "'Lexend', sans-serif",
+              textTransform: 'none',
+              px: 3,
+              py: 1,
+              borderRadius: 3,
+              width: { xs: '100%', sm: 'auto' },
 
-      {/* FILTERS */}
+              background: "#e48c9d",
+
+              color: '#13220d',
+
+              transition: 'all 0.2s ease',
+              '&:hover': {
+              transform: 'translateY(-1px)',
+            },
+
+            '&:active': {
+              transform: 'scale(0.98)',
+                    },
+                  }}
+                >
+            + Add User
+          </Button>
+        </Box>    
+
+      {loadError && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {loadError}
+        </Alert>
+      )}
+
+       {/*Enhancement 2: Create and design a search and filter. | DONE */}
+
       <Paper sx={{ background: "#6B8754", borderRadius: 4, p: {xs: 1.5, sm: 2}, minWidth: 0, overflowX: 'hidden' }}>
         {users.length ? (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -285,49 +562,184 @@ const handleSave = () => {
           )}
         </Paper>
 
-      {/* MODAL */}
-      <Dialog open={modalOpen} onClose={() => setModalOpen(false)} fullWidth>
-        <DialogTitle>
-          {editingId ? "Edit User" : "Add User"}
-        </DialogTitle>
+        <Dialog 
+        open={open}
+        onClose={closeModal} 
+        fullWidth 
+        fullScreen={isMobile}
+        maxWidth="md"
+        PaperProps={{
+          sx: {
+            borderRadius: 4,
+            overflow: "hidden",
+            boxShadow: "0 20px 60px rgba(0,0,0,0.25)",
+          },
+        }}
+      >
 
-        <DialogContent>
-          <Stack spacing={2} mt={1}>
+        <Box component="form" onSubmit={handleSaveUser}>
+          <DialogTitle 
+            sx={{
+            background: "#1f3a18",
+            color: "#e48c9d ",
+            fontFamily: "'Lexend', sans-serif",
+            fontSize: "24px",
+            fontWeight: 600,
+            py: 2,
+          }}> 
+          {isEditing ? 'Edit User' : 'Add User'}</DialogTitle>
+          <DialogContent 
+            sx={{
+              px: { xs: 2, sm: 3 },
+              py: 3,
+              background: "#A3B18A",
+            }}>
+            <Stack spacing={2} sx={{ pt: 1 }}>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <TextField {...fieldProps('firstName', 'First Name')}
+                  sx={{
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "#fff",
+                  borderRadius: 2,
+                },
+              }}/>
+              <TextField {...fieldProps('lastName', 'Last Name')} 
+                  sx={{
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "#fff",
+                  borderRadius: 2,
+                },
+              }}/>
+            </Stack>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <TextField {...fieldProps('age', 'Age')} 
+                  sx={{
+                "& .MuiOutlinedInput-root": {
+                  backgroundColor: "#fff",
+                  borderRadius: 2,
+                },
+              }}/>
+              <TextField {...fieldProps('gender', 'Gender', { select: true })}  
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#fff",
+                    borderRadius: 2,
+                  },
+                }}>
+                {genders.map((gender) => (
+                  <MenuItem key={gender} value={gender}>
+                    {labelize(gender)}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Stack>
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+              <TextField {...fieldProps('contactNumber', 'Contact Number')} 
+                    sx={{
+                    "& .MuiOutlinedInput-root": {
+                      backgroundColor: "#fff",
+                      borderRadius: 2,
+                    },
+                  }} />
+              <TextField {...fieldProps('email', 'Email Address', {type: 'email'})} 
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#fff",
+                    borderRadius: 2,
+                  },
+                }}/>
+
+              </Stack>
+              <Stack direction={{ xs: 'column', sm: 'row'}} spacing={2}>
+              <TextField
+                {...fieldProps('role', 'Role', { select: true })}
+                  sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#fff",
+                    borderRadius: 2,
+                  },
+                }}
+              >
+                {roles.map((role) => (
+                  <MenuItem key={role} value={role}>
+                    {labelize(role)}
+                  </MenuItem>
+                ))}
+              </TextField>
+                <TextField {...fieldProps('userName', 'Username')} 
+                  sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#fff",
+                    borderRadius: 2,
+                  },
+                }} />
+              </Stack>
+              <TextField
+                {...fieldProps('password', 'Password', {
+                  sx: {
+                    "& .MuiOutlinedInput-root": {
+                      backgroundColor: "#fff",
+                      borderRadius: 2,
+                    },
+                  },
+                  type: showPassword ? 'text' : 'password',
+                  slotProps: {
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            onMouseDown={(event) => event.preventDefault()}
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  },
+                })}
+              />
             <TextField
-              name="firstName"
-              label="First Name"
-              value={form.firstName}
-              onChange={handleChange}
-              fullWidth
+              {...fieldProps('address', 'Address', {multiline: true, minRows: 2})}
+                  sx={{
+                  "& .MuiOutlinedInput-root": {
+                    backgroundColor: "#fff",
+                    borderRadius: 2,
+                  },
+                }}
+            />  
+            <FormControlLabel
+              control={
+                <Switch
+                  name="isActive"
+                  checked={form.isActive}
+                  onChange={handleChange}
+                />
+              }
+              label={form.isActive ? "Active" : "Inactive"}
             />
-
-            <TextField
-              name="lastName"
-              label="Last Name"
-              value={form.lastName}
-              onChange={handleChange}
-              fullWidth
-            />
-
-            <TextField
-              name="email"
-              label="Email"
-              value={form.email}
-              onChange={handleChange}
-              fullWidth
-            />
-          </Stack>
-        </DialogContent>
-
-        <DialogActions>
-          <Button onClick={() => setModalOpen(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleSave}>
-            Save
-          </Button>
-        </DialogActions>
+            </Stack>
+          </DialogContent>
+          <DialogActions sx={{ px: 3, py: 2, }}>
+            <Button sx={{color: "#1f3a18", fontWeight: "600"}} onClick={closeModal}>Cancel</Button>
+            <Button 
+              type="submit"
+              variant="contained"
+              sx={{
+                background: "#13220d",
+                borderRadius: 2,
+                px: 3,
+                textTransform: "none",
+                "&:hover": { background: "#1f3a18" },
+              }}>
+              {isEditing ? 'Update' : 'Create'}
+            </Button>
+          </DialogActions>
+        </Box>
       </Dialog>
-    </Box>
-  );
-}
+      </Box>
+    );
+  };
 
-export default UsersPage;
+  export default UsersPage;

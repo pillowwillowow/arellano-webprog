@@ -22,6 +22,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import Button from '@mui/material/Button';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import ArticleIcon from '@mui/icons-material/Article';
 
 const drawerWidth = 240;
 const dashboardNavItems = [
@@ -42,7 +43,12 @@ const dashboardNavItems = [
         title: 'Users',
         to: "/dashboard/users",
         icon: <PeopleIcon />
-    }
+    },
+    {
+        label: "Articles",
+        to: "/dashboard/dasharticles",
+        icon: <ArticleIcon />
+    },
 ];
 
 const openedMixin = (theme) => ({
@@ -241,7 +247,8 @@ const DashLayout = () => {
                                     sx={{
                                         minHeight: 48,
                                         px: 2.5,
-                                        justifyContent: open ? 'initial' : 'center',
+                                        display: "flex",
+                                        justifyContent: open ? "flex-start" : "center",
                                     }}
                                 >
                                     <ListItemIcon

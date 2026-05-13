@@ -1,4 +1,4 @@
-const HOST = '${import.meta.env.VITE_HOST}';
+const HOST = `${import.meta.env.VITE_API_URL}`;
 
 export default {
     HOST,
