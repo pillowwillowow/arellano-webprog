@@ -33,7 +33,7 @@ function SignInPage() {
         console.log("Login successful:", data);
 
         // BLOCK VIEWERS
-        if (data.role === "viewer") {
+        if (user.role === "viewer") {
           setError("Viewers are not allowed to log in.");
           return;
         }

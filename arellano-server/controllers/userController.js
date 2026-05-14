@@ -24,6 +24,7 @@ const createUser = async (req, res) => {
 
         res.status(201).json(user);
     } catch (error) {
+        console.log("CREATE USER ERROR:", error);
         res.status(400).json({ message: error.message });
     }
 };
@@ -74,12 +75,12 @@ const loginUser = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user._id, email: user.email, type: user.type },
+            { id: user._id, email: user.email, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
-        res.json({ message: 'Login successful', token, type: user.type, firstName: user.firstName });
+        res.json({ message: 'Login successful', token, role: user.role, firstName: user.firstName, userName: user.userName });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

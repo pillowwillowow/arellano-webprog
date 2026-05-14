@@ -62,23 +62,23 @@
     const [roleFilter, setRoleFilter] = useState("");
     const [genderFilter, setGenderFilter] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
-
+    const [loggedInUser, setLoggedInUser] = useState(null);
     const navigate = useNavigate();
 
-    const loggedInUser = JSON.parse(
-      localStorage.getItem("loggedInUser")
-    );
+    // 1. LOAD LOGGED IN USER
+      useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+        setLoggedInUser(user);
+      }, []);
 
-    useEffect(() => {
-      // ONLY ADMIN CAN ACCESS USERS PAGE
-      if (!loggedInUser || loggedInUser.role !== "admin") {
-        navigate("/dashboard");
-      }
-    }, [loggedInUser, navigate]);
+      // 2. ONLY check after user is loaded
+      useEffect(() => {
+        if (loggedInUser === null) return; // 🔥 IMPORTANT: wait for load
 
-    useEffect(() => {
-    loadUsers();
-  }, []);
+        if (loggedInUser.role !== "admin") {
+          navigate("/dashboard");
+        }
+      }, [loggedInUser, navigate]);
 
   const loadUsers = async () => {
     try {
@@ -88,7 +88,7 @@
 
         const formattedUsers =
           (data?.users || []).map((user, index) => ({
-          id: user._id || index + 1,
+          id: user._id?.toString() || user.id,
           firstName: user.firstName ?? "",
           lastName: user.lastName ?? "",
           age: user.age ?? "",
@@ -143,6 +143,8 @@
     };
 
     const handleEdit = (user) => {
+      console.log("EDIT USER:", user);
+
       setForm({
         ...user,
         password: "",
@@ -227,10 +229,11 @@
       }
 
       // PASSWORD: at least 8 characters
-      if (!nextErrors.password && form.password.trim().length < 8) {
-        nextErrors.password = 'Password must be at least 8 characters.';
+      if (!isEditing) {
+        if (!form.password || form.password.trim().length < 8) {
+          nextErrors.password = 'Password must be at least 8 characters.';
+        }
       }
-
       // CONTACT NUMBER: must be exactly 11 digits
       if (
         !nextErrors.contactNumber &&
@@ -297,8 +300,9 @@
           closeModal();
 
         } catch (error) {
-          console.error("Error saving user:", error);
-        }
+        console.error("Error saving user:", error.response?.data);
+        alert(error.response?.data?.message || "Failed to save user");
+      }
     };
 
 

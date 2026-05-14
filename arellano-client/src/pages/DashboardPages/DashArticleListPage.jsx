@@ -1,96 +1,75 @@
-import { useEffect, useState } from 'react';
-import { fetchArticles, updateArticle, createArticle } from '../../services/ArticleService';
+import { useEffect, useState } from "react";
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
+  Alert,
   Box,
   Button,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   MenuItem,
+  Paper,
   Stack,
   Switch,
   TextField,
   Typography,
-  Paper
-} from '@mui/material';
+} from "@mui/material";
 
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TitleIcon from '@mui/icons-material/Title';
-import ShortTextIcon from '@mui/icons-material/ShortText';
-import StarIcon from '@mui/icons-material/Star';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { DataGrid } from "@mui/x-data-grid";
 
-import { DataGrid } from '@mui/x-data-grid';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import TitleIcon from "@mui/icons-material/Title";
+import ShortTextIcon from "@mui/icons-material/ShortText";
+import ArticleIcon from "@mui/icons-material/Article";
 
-const section = {
-  borderTop: "2px solid #18181b",
-  borderBottom: "2px solid #18181b",
-  backgroundColor: "#fafafa",
-  px: { xs: 2, sm: 3, md: 4 },
-  py: 3,
-};
+import {
+  fetchArticles,
+  createArticle,
+  updateArticle,
+} from "../../services/ArticleService";
 
-const container = {
-  width: "100%",
-};
+const fairyGreen = "#6B8754";
+const darkGreen = "#13220d";
+const fairyPink = "#e48c9d";
+const softBg = "#f8faf5";
 
-const card = {
-  border: "2px solid #18181b",
-  borderRadius: "24px",
-  bgcolor: "#f4f4f5",
-  p: 2,
-};
-
-const modalStyle = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-
-  width: {
-    xs: '90%',
-    sm: 600,
-    md: 700,
-  },
-
-  maxHeight: '90vh',
-  overflowY: 'auto',
-
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-  borderRadius: 2,
+const blankArticle = {
+  slug: "",
+  title: "",
+  content: "",
+  featured: false,
+  isActive: true,
 };
 
 const DashArticleListPage = () => {
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [open, setOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editArticleId, setEditArticleId] = useState(null);
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [newArticle, setNewArticle] = useState({
-    slug: '',
-    title: '',
-    content: '',
-    featured: false,
-    isActive: true,
-  });
+
+  const [newArticle, setNewArticle] = useState(blankArticle);
+
   const [errors, setErrors] = useState({});
+  const [loadError, setLoadError] = useState("");
 
   const [search, setSearch] = useState("");
   const [filterFeatured, setFilterFeatured] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
 
+  // LOAD ARTICLES
   const loadArticles = async () => {
     try {
       setLoading(true);
-      const {data} = await fetchArticles();
-      setArticles(data?.articles ?? []);
+
+      const { data } = await fetchArticles();
+
+      setArticles(data?.articles || []);
     } catch (error) {
-      console.error('Error fetching articles:', error);
+      console.error("Error loading articles:", error);
+      setLoadError("Failed to load articles.");
     } finally {
       setLoading(false);
     }
@@ -100,254 +79,226 @@ const DashArticleListPage = () => {
     loadArticles();
   }, []);
 
-  const filteredArticles = articles.filter((a) => {
+  // FILTERS
+  const filteredArticles = articles.filter((article) => {
     const matchesSearch =
-      `${a.slug} ${a.title} ${a.content}`
-        .toLowerCase()
-        .includes(search.toLowerCase());
+      article.slug?.toLowerCase().includes(search.toLowerCase()) ||
+      article.title?.toLowerCase().includes(search.toLowerCase()) ||
+      article.content?.toLowerCase().includes(search.toLowerCase());
 
-    const matchesFeatured = filterFeatured ? a.featured === (filterFeatured === 'featured') : true;
+    const matchesFeatured =
+      filterFeatured === ""
+        ? true
+        : filterFeatured === "featured"
+        ? article.featured
+        : !article.featured;
 
     const matchesStatus =
       filterStatus === ""
         ? true
         : filterStatus === "active"
-        ? a.isActive
-        : !a.isActive;
+        ? article.isActive
+        : !article.isActive;
 
     return matchesSearch && matchesFeatured && matchesStatus;
   });
 
+  // OPEN MODAL
   const handleOpen = () => {
     setIsEditing(false);
-    setNewArticle({
-      slug: '',
-      title: '',
-      content: '',
-      featured: false,
-      isActive: true,
-    });
+    setEditArticleId(null);
+    setNewArticle(blankArticle);
+    setErrors({});
     setOpen(true);
   };
 
+  // CLOSE MODAL
   const handleClose = () => {
     setOpen(false);
+    setErrors({});
+    setNewArticle(blankArticle);
     setIsEditing(false);
     setEditArticleId(null);
   };
 
-  const handleEdit = (id) => {
-    const articleToEdit = articles.find((article) => article._id === id);
-    if (articleToEdit) {
-      setNewArticle({ ...articleToEdit });
-      setEditArticleId(id);
-      setIsEditing(true);
-      setOpen(true);
-    };
-  }
+  // EDIT
+  const handleEdit = (article) => {
+    setNewArticle({
+      slug: article.slug || "",
+      title: article.title || "",
+      content: article.content || "",
+      featured: article.featured || false,
+      isActive:
+        typeof article.isActive === "boolean"
+          ? article.isActive
+          : true,
+    });
 
+    setEditArticleId(article._id);
+    setIsEditing(true);
+    setOpen(true);
+  };
+
+  // HANDLE INPUT CHANGE
+  const handleChange = ({ target: { name, value, checked, type } }) => {
+    setNewArticle((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
+  };
+
+  // VALIDATION
+  const validate = () => {
+    const nextErrors = {};
+
+    if (!newArticle.slug.trim()) {
+      nextErrors.slug = "Slug is required.";
+    } else if (!/^[a-z0-9-]+$/.test(newArticle.slug.trim())) {
+      nextErrors.slug =
+        "Slug must contain lowercase letters, numbers, and hyphens only.";
+    }
+
+    if (!newArticle.title.trim()) {
+      nextErrors.title = "Title is required.";
+    }
+
+    if (!newArticle.content.trim()) {
+      nextErrors.content = "Content is required.";
+    }
+
+    setErrors(nextErrors);
+
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  // SAVE ARTICLE
   const handleSaveArticle = async () => {
     if (!validate()) return;
 
     try {
+      const articleData = {
+        slug: newArticle.slug.trim(),
+        title: newArticle.title.trim(),
+        content: newArticle.content.trim(),
+        featured: newArticle.featured,
+        isActive: newArticle.isActive,
+      };
+
       if (isEditing) {
-        await updateArticle(editArticleId, newArticle);
+        await updateArticle(editArticleId, articleData);
       } else {
-        await createArticle(newArticle);
+        await createArticle(articleData);
       }
-      loadArticles();
+
+      await loadArticles();
+
       handleClose();
     } catch (error) {
-      console.error('Error saving article:', error);
+      console.error("Error saving article:", error);
+
+      alert(
+        error?.response?.data?.message ||
+          "Failed to save article."
+      );
     }
   };
 
+  // TOGGLE ACTIVE
   const handleToggleActive = async (id, isActive) => {
     try {
-      await updateArticle(id, { isActive: !isActive });
-      loadArticles();
+      await updateArticle(id, {
+        isActive: !isActive,
+      });
+
+      await loadArticles();
     } catch (error) {
-      console.error('Error toggling article status:', error);
+      console.error("Error updating article status:", error);
     }
   };
 
-  const inputField = (icon, props) => (
-    <Stack direction="row" spacing={1.5} alignItems="center" sx={{ flex: 1 }}>
-      <Box sx={{ display: "flex", minWidth: 32, color: "text.secondary" }}>
-        {icon}
-      </Box>
-
-      <TextField
-        fullWidth
-        size="small"
-        {...props}
-        error={!!errors[props.name]}
-        helperText={errors[props.name]}
-        onChange={(e) => {
-          setNewArticle({ ...newArticle, [props.name]: e.target.value });
-
-          setErrors((prev) => ({ ...prev, [props.name]: "" }));
-
-          props.onChange?.(e);
-        }}
-      />
-    </Stack>
-  );
-
-  const validate = () => {
-    const err = {};
-
-    const slug = newArticle.slug?.trim() || "";
-    const title = newArticle.title?.trim() || "";
-    const content = newArticle.content?.trim() || "";
-
-    if (!slug) err.slug = "Slug is required";
-    else if (!/^[a-z0-9-]+$/.test(slug)) err.slug = "Slug must be lowercase, numbers, and hyphens only";
-
-    if (!title) err.title = "Title is required";
-
-    if (!content) err.content = "Content is required";
-
-    setErrors(err);
-
-    return Object.keys(err).length === 0;
-  };
-
+  // DATA GRID COLUMNS
   const columns = [
     {
       field: "_id",
       headerName: "ID",
-      flex: 0.45,
-      minWidth: 70,
-      valueGetter: (value) => value.slice(-6),
+      width: 100,
+      valueGetter: (value) => value?.slice(-6),
     },
-    {
-      field: "slug",
-      headerName: "Slug",
-      flex: 0.9,
-      minWidth: 110,
-    },
+
     {
       field: "title",
       headerName: "Title",
-      flex: 1.2,
-      minWidth: 140,
-    },
-    {
-      field: "paragraphs",
-      headerName: "Paragraphs",
-      flex: 0.55,
-      minWidth: 85,
-      align: "center",
-      headerAlign: "center",
-      valueGetter: (value, row) => row.content.split("\n\n").length,
-    },
-    {
-      field: "preview",
-      headerName: "Preview",
-      flex: 1.8,
+      flex: 1,
       minWidth: 180,
-      valueGetter: (value, row) =>
-        row.content.length > 90
-          ? row.content.substring(0, 90) + "..."
-          : row.content,
     },
+
+    {
+      field: "slug",
+      headerName: "Slug",
+      flex: 1,
+      minWidth: 160,
+    },
+
     {
       field: "featured",
       headerName: "Featured",
-      flex: 0.55,
-      minWidth: 85,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => {
-        const featured = params.row.featured;
-
-        return (
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Box
-              sx={{
-                px: 1,
-                py: 0.25,
-                borderRadius: "999px",
-                fontSize: "0.7rem",
-                fontWeight: 600,
-                minWidth: 72,
-                textAlign: "center",
-                border: "1px solid",
-                borderColor: featured ? "primary.dark" : "#18181b",
-                bgcolor: featured ? "primary.dark" : "transparent",
-                color: featured ? "#fff" : "#18181b",
-                lineHeight: 2,
-              }}
-            >
-              {featured ? "Featured" : "Standard"}
-            </Box>
-          </Box>
-        );
-      },
+      width: 130,
+      renderCell: (params) => (
+        <Chip
+          label={params.row.featured ? "Featured" : "Standard"}
+          size="small"
+          sx={{
+            backgroundColor: params.row.featured
+              ? fairyPink
+              : "#ececec",
+            color: darkGreen,
+            fontWeight: 600,
+          }}
+        />
+      ),
     },
+
     {
-      field: "isActive",
+      field: "status",
       headerName: "Status",
-      flex: 0.6,
-      minWidth: 90,
-      align: "center",
-      headerAlign: "center",
-      renderCell: (params) => {
-        const isActive = params.row.isActive;
-
-        return (
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Box
-              sx={{
-                px: 1,
-                py: 0.25,
-                borderRadius: "999px",
-                fontSize: "0.7rem",
-                fontWeight: 600,
-                minWidth: 72,
-                textAlign: "center",
-                bgcolor: isActive ? "success.main" : "error.main",
-                color: "#fff",
-                lineHeight: 2,
-              }}
-            >
-              {isActive ? "Active" : "Inactive"}
-            </Box>
-          </Box>
-        );
-      },
+      width: 120,
+      renderCell: (params) => (
+        <Chip
+          label={params.row.isActive ? "Active" : "Inactive"}
+          size="small"
+          sx={{
+            backgroundColor: params.row.isActive
+              ? "#d7f3dd"
+              : "#ececec",
+            color: darkGreen,
+            fontWeight: 600,
+          }}
+        />
+      ),
     },
+
     {
       field: "actions",
       headerName: "Actions",
-      flex: 0.9,
-      minWidth: 145,
-      align: "center",
-      headerAlign: "center",
+      width: 220,
+      sortable: false,
       renderCell: (params) => (
-        <Box>
+        <Stack direction="row" spacing={1}>
           <Button
-            variant="contained"
             size="small"
-            sx={{ minWidth: 50, px: 1, backgroundColor: "#18181b" }}
-            onClick={() => handleEdit(params.row._id)}
+            variant="outlined"
+            onClick={() => handleEdit(params.row)}
+            sx={{
+              borderColor: fairyPink,
+              color: darkGreen,
+              textTransform: "none",
+              fontWeight: 600,
+            }}
           >
             Edit
           </Button>
@@ -355,236 +306,354 @@ const DashArticleListPage = () => {
           <Switch
             checked={params.row.isActive}
             onChange={() =>
-              handleToggleActive(params.row._id, params.row.isActive)
+              handleToggleActive(
+                params.row._id,
+                params.row.isActive
+              )
             }
             sx={{
               "& .MuiSwitch-switchBase.Mui-checked": {
-                color: "#18181b",
+                color: fairyGreen,
               },
-              "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                backgroundColor: "#18181b",
-              },
+
+              "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                {
+                  backgroundColor: fairyGreen,
+                },
             }}
           />
-        </Box>
+        </Stack>
       ),
     },
   ];
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <Box sx={section}>
-        <Box sx={container}>
-          <Box
-            sx={{
-              mb: 3,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 2,
-              flexWrap: 'wrap',
-            }}
-          >
+    <Box
+      sx={{
+        width: "100%",
+        minHeight: "100vh",
+        background: fairyGreen,
+        p: { xs: 2, md: 4 },
+      }}
+    >
+      {/* HEADER */}
+      <Paper
+        sx={{
+          borderRadius: 5,
+          p: 3,
+          border: `2px solid ${darkGreen}`,
+          background: softBg,
+        }}
+      >
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          justifyContent="space-between"
+          alignItems={{ xs: "stretch", sm: "center" }}
+          spacing={2}
+        >
+          <Box>
             <Typography
               sx={{
-                fontSize: { xs: "1.75rem", md: "1.9rem" },
+                fontSize: "2rem",
                 fontWeight: 700,
-                color: "#18181b",
-                lineHeight: 1.1,
+                color: darkGreen,
               }}
             >
-              Articles
+              Fairy Articles ✨
             </Typography>
-            <Button variant="contained" startIcon={<AddCircleIcon />} onClick={handleOpen} sx={{ width: { xs: '100%', sm: 'auto', backgroundColor: "#18181b"} }}>
-              Add Article
-            </Button>
+
+            <Typography
+              sx={{
+                color: "#5f5f5f",
+                mt: 1,
+              }}
+            >
+              Create and manage magical forest stories.
+            </Typography>
           </Box>
 
-          <Stack spacing={2} sx={{ mt: 3, pb: 3}}>
-            <TextField
-              size="small"
-              label="Search articles"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              fullWidth
-            />
+          <Button
+            variant="contained"
+            startIcon={<AddCircleIcon />}
+            onClick={handleOpen}
+            sx={{
+              background: fairyPink,
+              color: darkGreen,
+              fontWeight: 700,
+              textTransform: "none",
+              borderRadius: 3,
+              px: 3,
+              py: 1.2,
 
-            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-              <TextField
-                select
-                size="small"
-                label="Featured"
-                value={filterFeatured}
-                onChange={(e) => setFilterFeatured(e.target.value)}
-                fullWidth
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="featured">Featured</MenuItem>
-                <MenuItem value="standard">Standard</MenuItem>
-              </TextField>
-
-              <TextField
-                select
-                size="small"
-                label="Status"
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                fullWidth
-              >
-                <MenuItem value="">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
-              </TextField>
-            </Stack>
-          </Stack>
-
-          <Paper elevation={0} sx={card}>
-            <DataGrid
-              rows={filteredArticles}
-              columns={columns}
-              getRowId={(row) => row._id}
-              loading={loading}
-              pageSizeOptions={[5, 10]}
-              initialState={{
-              pagination: { paginationModel: { pageSize: 5, page: 0 } },
-                }}
-              columnBuffer={10}
-              disableRowSelectionOnClick
-              sx={{
-                border: "none",
-                borderRadius: "18px",
-                overflow: "hidden",
-                fontSize: "0.78rem",
-
-                "& .MuiDataGrid-columnHeaders": {
-                  backgroundColor: "#e4e4e7",
-                },
-
-                "& .MuiDataGrid-cell": {
-                  borderBottom: "1px solid #e4e4e7",
-                },
-
-                "& .MuiDataGrid-cell:focus, & .MuiDataGrid-columnHeader:focus": {
-                  outline: "none",
-                },
-              }}
-            />
-          </Paper>
-
-          <Dialog
-            open={open}
-            onClose={handleClose}
-            fullWidth
-            maxWidth="md"
-            PaperProps={{
-              sx: {
-                borderRadius: "24px",
-                border: "2px solid #18181b",
-                bgcolor: "#fafafa",
+              "&:hover": {
+                background: "#d97c90",
               },
             }}
           >
-            <Box>
-              <DialogTitle sx={{ fontWeight: 700 }}>
-                {isEditing ? "Edit Article" : "Add Article"}
-              </DialogTitle>
+            Add Article
+          </Button>
+        </Stack>
+      </Paper>
 
-              <DialogContent dividers sx={{ px: { xs: 2, sm: 3 } }}>
-                <Stack spacing={2} sx={{ pt: 1 }}>
-                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-                    {inputField(<ShortTextIcon />, {
-                      name: "slug",
-                      label: "Article Slug",
-                      value: newArticle.slug,
-                      onChange: (e) =>
-                        setNewArticle({ ...newArticle, slug: e.target.value }),
-                    })}
+      {/* ERROR */}
+      {loadError && (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          {loadError}
+        </Alert>
+      )}
 
-                    {inputField(<TitleIcon />, {
-                      name: "title",
-                      label: "Title",
-                      value: newArticle.title,
-                      onChange: (e) =>
-                        setNewArticle({ ...newArticle, title: e.target.value }),
-                    })}
-                  </Stack>
+      {/* FILTERS */}
+      <Paper
+        sx={{
+          mt: 3,
+          p: 3,
+          borderRadius: 5,
+          border: `2px solid ${darkGreen}`,
+          background: softBg,
+        }}
+      >
+        <Stack spacing={2}>
+          <TextField
+            label="Search Articles"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            fullWidth
+          />
 
-                  {inputField(<ShortTextIcon />, {
-                    name: "content",
-                    label: "Content",
-                    value: newArticle.content,
-                    multiline: true,
-                    rows: 6,
-                    onChange: (e) =>
-                      setNewArticle({ ...newArticle, content: e.target.value }),
-                  })}
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+          >
+            <TextField
+              select
+              label="Featured"
+              value={filterFeatured}
+              onChange={(e) =>
+                setFilterFeatured(e.target.value)
+              }
+              fullWidth
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="featured">
+                Featured
+              </MenuItem>
+              <MenuItem value="standard">
+                Standard
+              </MenuItem>
+            </TextField>
 
-                  <Stack direction="column">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        minWidth: 140,
-                      }}
-                    >
-                      <Typography sx={{ minWidth: 80 }}>Featured:</Typography>
-                      <Switch
-                        checked={newArticle.featured}
-                        onChange={(e) =>
-                          setNewArticle({ ...newArticle, featured: e.target.checked })
-                        }
-                        sx={{
-                          m: 0,
-                          "& .MuiSwitch-switchBase.Mui-checked": {
-                            color: "#18181b",
-                          },
-                          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                            backgroundColor: "#18181b",
-                          },
-                        }}
-                      />
-                    </Box>
+            <TextField
+              select
+              label="Status"
+              value={filterStatus}
+              onChange={(e) =>
+                setFilterStatus(e.target.value)
+              }
+              fullWidth
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="active">
+                Active
+              </MenuItem>
+              <MenuItem value="inactive">
+                Inactive
+              </MenuItem>
+            </TextField>
+          </Stack>
+        </Stack>
+      </Paper>
 
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        minWidth: 140,
-                      }}
-                    >
-                      <Typography sx={{ minWidth: 80 }}>Status:</Typography>
-                      <Switch
-                        checked={newArticle.isActive}
-                        onChange={(e) =>
-                          setNewArticle({ ...newArticle, isActive: e.target.checked })
-                        }
-                        sx={{
-                          m: 0,
-                          "& .MuiSwitch-switchBase.Mui-checked": {
-                            color: "#18181b",
-                          },
-                          "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                            backgroundColor: "#18181b",
-                          },
-                        }}
-                      />
-                    </Box>
-                  </Stack>
-                </Stack>
-              </DialogContent>
+      {/* TABLE */}
+      <Paper
+        sx={{
+          mt: 2,
+          borderRadius: 5,
+          overflow: "hidden",
+          border: `2px solid ${darkGreen}`,
+        }}
+      >
+        <DataGrid
+          rows={filteredArticles}
+          columns={columns}
+          getRowId={(row) => row._id}
+          loading={loading}
+          disableRowSelectionOnClick
+          pageSizeOptions={[5, 10]}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+                page: 0,
+              },
+            },
+          }}
+          sx={{
+            border: "none",
 
-              <DialogActions sx={{ px: 3, py: 2 }}>
-                <Button variant="outlined" onClick={handleClose} sx={{ color: "#18181b", borderColor: "#18181b" }}>
-                  Cancel
-                </Button>
-                <Button variant="contained" onClick={handleSaveArticle} sx={{ backgroundColor: "#18181b" }}>
-                  {isEditing ? 'Save Changes' : 'Add'}
-                </Button>
-              </DialogActions>
-            </Box>
-          </Dialog>
-        </Box>
-      </Box>
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#edf2e5",
+              color: darkGreen,
+              fontWeight: 700,
+            },
+
+            "& .MuiDataGrid-cell:focus": {
+              outline: "none",
+            },
+
+            "& .MuiDataGrid-columnHeader:focus": {
+              outline: "none",
+            },
+          }}
+        />
+      </Paper>
+
+      {/* MODAL */}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle
+          sx={{
+            background: darkGreen,
+            color: fairyPink,
+            fontWeight: 700,
+          }}
+        >
+          {isEditing
+            ? "Edit Fairy Article"
+            : "Add Fairy Article"}
+        </DialogTitle>
+
+        <DialogContent
+          sx={{
+            background: "#f7f8f2",
+            pt: 3,
+          }}
+        >
+          <Stack spacing={3} sx={{ mt: 1 }}>
+            <Stack
+              direction={{ xs: "column", md: "row" }}
+              spacing={2}
+            >
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={{ flex: 1 }}
+              >
+                <ShortTextIcon />
+
+                <TextField
+                  fullWidth
+                  label="Slug"
+                  name="slug"
+                  value={newArticle.slug}
+                  onChange={handleChange}
+                  error={!!errors.slug}
+                  helperText={errors.slug}
+                />
+              </Stack>
+
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                sx={{ flex: 1 }}
+              >
+                <TitleIcon />
+
+                <TextField
+                  fullWidth
+                  label="Title"
+                  name="title"
+                  value={newArticle.title}
+                  onChange={handleChange}
+                  error={!!errors.title}
+                  helperText={errors.title}
+                />
+              </Stack>
+            </Stack>
+
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="flex-start"
+            >
+              <ArticleIcon sx={{ mt: 1 }} />
+
+              <TextField
+                fullWidth
+                multiline
+                rows={8}
+                label="Content"
+                name="content"
+                value={newArticle.content}
+                onChange={handleChange}
+                error={!!errors.content}
+                helperText={errors.content}
+              />
+            </Stack>
+
+            <Stack direction="row" spacing={4}>
+              <Stack direction="row" alignItems="center">
+                <Typography>Featured</Typography>
+
+                <Switch
+                  name="featured"
+                  checked={newArticle.featured}
+                  onChange={handleChange}
+                />
+              </Stack>
+
+              <Stack direction="row" alignItems="center">
+                <Typography>Status</Typography>
+
+                <Switch
+                  name="isActive"
+                  checked={newArticle.isActive}
+                  onChange={handleChange}
+                />
+              </Stack>
+            </Stack>
+          </Stack>
+        </DialogContent>
+
+        <DialogActions
+          sx={{
+            px: 3,
+            py: 2,
+            background: "#f7f8f2",
+          }}
+        >
+          <Button
+            onClick={handleClose}
+            sx={{
+              color: darkGreen,
+            }}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            variant="contained"
+            onClick={handleSaveArticle}
+            sx={{
+              background: fairyPink,
+              color: darkGreen,
+              fontWeight: 700,
+              textTransform: "none",
+
+              "&:hover": {
+                background: "#d97c90",
+              },
+            }}
+          >
+            {isEditing ? "Save Changes" : "Add Article"}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

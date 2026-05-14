@@ -23,6 +23,7 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import Button from '@mui/material/Button';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import ArticleIcon from '@mui/icons-material/Article';
+import { useEffect } from 'react';
 
 const drawerWidth = 240;
 const dashboardNavItems = [
@@ -170,6 +171,7 @@ const getPageTitle = (pathname) => {
 }
 
 const DashLayout = () => {
+    const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const location = useLocation();
@@ -206,11 +208,12 @@ const DashLayout = () => {
                         </IconButton>
                         <Typography 
                             variant="h6" 
-                            noWrap component="div"
+                            noWrap 
+                            component="div"
                             sx={{ flexGrow: 1, fontFamily: "'Lexend', sans-serif" }}
-                        >
-                            {getPageTitle(location.pathname)}
-                        </Typography>
+                            >
+                            {loggedInUser ? `Hello, ${loggedInUser.userName || loggedInUser.firstName}` : "Dashboard"}
+                            </Typography>
                         {/* Search */}
                         <Search>
                             <SearchIconWrapper>

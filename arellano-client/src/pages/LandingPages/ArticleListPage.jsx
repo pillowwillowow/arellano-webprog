@@ -13,14 +13,15 @@ const ArticleListPage = () => {
 
       const { data } = await fetchArticles();
 
-      // ONLY ACTIVE ARTICLES
-      const activeArticles = (data?.articles || []).filter(
+      // only show active articles
+      const activeArticles = (data.articles || []).filter(
         (article) => article.isActive
       );
 
       setArticles(activeArticles);
+
     } catch (error) {
-      console.error("Error loading articles:", error);
+      console.error("Error fetching articles:", error);
     } finally {
       setLoading(false);
     }
@@ -32,6 +33,7 @@ const ArticleListPage = () => {
 
   return (
     <div className="flex w-full bg-[#6B8754] flex-col gap-6">
+      {/* HERO SECTION */}
       <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
           Articles
@@ -42,8 +44,8 @@ const ArticleListPage = () => {
         </h1>
 
         <p className="mt-4 max-w-lg text-sm leading-7 text-zinc-600 sm:text-base">
-          Dive into stories about fairies, enchanted plants, and mystical
-          gardens through these featured articles.
+          Dive into stories about fairies, enchanted plants, and mystical gardens
+          through these featured articles.
         </p>
 
         <div className="mt-6">
@@ -51,6 +53,7 @@ const ArticleListPage = () => {
         </div>
       </section>
 
+      {/* ARTICLE SECTION */}
       <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="mb-6">
           <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
@@ -63,9 +66,11 @@ const ArticleListPage = () => {
         </div>
 
         {loading ? (
-          <p>Loading articles...</p>
-        ) : (
+          <p className="text-zinc-600">Loading articles...</p>
+        ) : articles.length > 0 ? (
           <ArticleList articles={articles} />
+        ) : (
+          <p className="text-zinc-600">No articles found.</p>
         )}
       </section>
     </div>
