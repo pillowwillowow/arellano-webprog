@@ -13,43 +13,49 @@ const getUsers = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-    try {
-        if (!req.body.password) {
-            return res.status(400).json({ message: 'Password is required' });
-        }
-
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-        const user = await User.create({ ...req.body, password: hashedPassword });
-
-        res.status(201).json(user);
-    } catch (error) {
-        console.log("CREATE USER ERROR:", error);
-        res.status(400).json({ message: error.message });
+  try {
+    if (!req.body.password) {
+      return res.status(400).json({ message: 'Password is required' });
     }
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+    const user = await User.create({
+      ...req.body,
+      password: hashedPassword
+    });
+
+    res.status(201).json(user);
+  } catch (error) {
+    console.log("CREATE USER ERROR:", error);
+    res.status(400).json({ message: error.message });
+  }
 };
-
 const updateUser = async (req, res) => {
-    try {
-        if(req.body.password) {
-            req.body.password = await bcrypt.hash(req.body.password, 10);
-        }
-
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
-
-        res.json(user);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
+  try {
+    if (req.body.password) {
+      req.body.password = await bcrypt.hash(req.body.password, 10);
     }
+
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
 const deleteUser = async (req, res) => {
-    try {
-        await User.findByIdAndUpdate(req.params.id);
-        res.json({ message: 'User deleted successfully '});
-    } catch (error) {
-        res.status(400).json({ message: error.message }); 
-    }
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 };
 
 const loginUser = async (req, res) => {
@@ -65,7 +71,7 @@ const loginUser = async (req, res) => {
             return res.status(403).json({ message: 'Your account is inactive. Please contact support.' });
         }
 
-        if (user.type === 'viewer') {
+        if (user.role === 'viewer') {
             return res.status(403).json({ message: 'Viewer accounts cannot sign in. Please contact an administrator.' });
         }
 
@@ -80,7 +86,7 @@ const loginUser = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.json({ message: 'Login successful', token, role: user.role, firstName: user.firstName, userName: user.userName });
+        res.json({ message: 'Login successful', token, role: user.role, firstName: user.firstName, userName: user.userName, email: user.email });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

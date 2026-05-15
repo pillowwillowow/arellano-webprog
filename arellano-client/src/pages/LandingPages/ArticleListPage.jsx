@@ -68,10 +68,52 @@ const ArticleListPage = () => {
         {loading ? (
           <p className="text-zinc-600">Loading articles...</p>
         ) : articles.length > 0 ? (
-          <ArticleList articles={articles} />
-        ) : (
-          <p className="text-zinc-600">No articles found.</p>
-        )}
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {articles.map((article) => (
+            <div
+              key={article._id || article.slug}
+              className="rounded-xl border-2 border-zinc-900 bg-white p-4 shadow"
+            >
+
+              {/* FEATURED LABEL */}
+              {article.featured && (
+                <div className="mb-3">
+                  <span className="rounded-full bg-pink-200 px-3 py-1 text-xs font-bold uppercase tracking-wide text-zinc-900">
+                    ✨ Featured
+                  </span>
+                </div>
+              )}
+
+              {/* ARTICLE IMAGE */}
+              <img
+                src={
+                  article.image?.trim() ||
+                  "https://via.placeholder.com/600x350?text=No+Image"
+                }
+                alt={article.title}
+                className="h-52 w-full rounded-xl border-2 border-zinc-900 object-cover"
+              />
+
+              <h3 className="mt-4 text-lg font-bold text-zinc-900">
+                {article.title}
+              </h3>
+
+              <p className="mt-2 text-sm text-zinc-600 line-clamp-3">
+                {article.content}
+              </p>
+
+              <Button
+                to={`/articles/${article.slug}`}
+                className="mt-4"
+              >
+                Read More
+              </Button>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-zinc-600">No articles found.</p>
+      )}
       </section>
     </div>
   );

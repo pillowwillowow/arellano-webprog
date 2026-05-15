@@ -115,6 +115,10 @@
     }
   };
 
+  useEffect(() => {
+  loadUsers();
+}, []);
+
   const normalizedSearch = search.toLowerCase().trim();
 
   const filteredUsers = users.filter((user) => {
@@ -180,8 +184,8 @@
 
     const validate = () => {
       const nextErrors = {};
-      const email = form.email.trim().toLowerCase();
-      const userName = form.userName.trim();
+      const email = String(form.email || "").trim().toLowerCase();
+      const userName = String(form.userName || "").trim();
 
       [
         ['firstName', 'First Name'],
@@ -192,13 +196,15 @@
         ['email', 'Email'],
         ['role', 'Role'],
         ['userName', 'Username'],
-        ['password', 'Password'],
         ['address', 'Address'],
       ].forEach(([key, label]) => {
         if (!form[key] || String(form[key]).trim() === '') {
           nextErrors[key] = `${label} is required.`;
         }
       });
+      if (!isEditing && !form.password.trim()) {
+        nextErrors.password = "Password is required.";
+      }
 
       if (
         !nextErrors.email &&
@@ -229,11 +235,22 @@
       }
 
       // PASSWORD: at least 8 characters
-      if (!isEditing) {
-        if (!form.password || form.password.trim().length < 8) {
-          nextErrors.password = 'Password must be at least 8 characters.';
+        if (!isEditing) {
+          if (!form.password || form.password.trim().length < 8) {
+            nextErrors.password = 'Password must be at least 8 characters.';
+          }
         }
-      }
+
+        // During edit, password is optional
+        if (
+          isEditing &&
+          form.password &&
+          form.password.trim() !== "" &&
+          form.password.trim().length < 8
+        ) {
+          nextErrors.password =
+            'Password must be at least 8 characters.';
+        }
       // CONTACT NUMBER: must be exactly 11 digits
       if (
         !nextErrors.contactNumber &&
@@ -243,11 +260,8 @@
       }
 
       // AGE: numbers only
-      if (
-        !nextErrors.age &&
-        !/^\d+$/.test(form.age.trim())
-      ) {
-        nextErrors.age = 'Age must be a number only.';
+      if (!/^\d+$/.test(String(form.age || "").trim())) {
+        nextErrors.age = "Age must be a number only.";
       }
 
       // USERNAME: no spaces allowed
@@ -274,37 +288,40 @@
       const userData = {
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
-        age: form.age.trim(),
+        age: String(form.age || "").trim(),
         gender: form.gender.trim(),
-        contactNumber: form.contactNumber.trim(),
-        email: form.email.trim(),
+        contactNumber: String(form.contactNumber || "").trim(),
+        email: String(form.email || "").trim(),
         role: form.role.trim(),
-        userName: form.userName.trim(),
-        password: form.password.trim(),
+        userName: String(form.userName || "").trim(),
         address: form.address.trim(),
         isActive: form.isActive,
       };
 
-        try {
-          if (isEditing) {
+      // ONLY add password if user typed one
+      if (form.password && form.password.trim() !== "") {
+        userData.password = form.password.trim();
+      }
 
-            await updateUser(editUserId, userData);
+      try {
+        if (isEditing) {
+          await updateUser(editUserId, userData);
+        } else {
+          await createUser(userData);
+        }
 
-          } else {
+        await loadUsers();
+        closeModal();
 
-            await createUser(userData);
-
-          }
-
-          await loadUsers();
-          closeModal();
-
-        } catch (error) {
+      } catch (error) {
         console.error("Error saving user:", error.response?.data);
-        alert(error.response?.data?.message || "Failed to save user");
+
+        alert(
+          error.response?.data?.message ||
+          "Failed to save user"
+        );
       }
     };
-
 
     const handleToggleActive = async (id, isActive) => {
       try {

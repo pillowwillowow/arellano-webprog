@@ -1,72 +1,110 @@
-import { useParams } from 'react-router-dom';
-import Button from '../../components/Button.jsx';
-import articles from "../../data/article-content.js";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Button from "../../components/Button.jsx";
+import { getArticleBySlug } from "../../services/ArticleService";
 
 function ArticlePage() {
-    const { name } = useParams();
-    const article = articles.find((article) => article.name === name);
+const { slug } = useParams();
+const [article, setArticle] = useState(null);
+const [loading, setLoading] = useState(true);
 
-    if (!article) {
-        return (
-            <div className="flex w-full flex-col gap-6 min-h-[60vh] px-6">
-                <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-                   <div className="mx-auto max-w-3xl">
-                    <h1 className="text-3xl font-bold text-zinc-900">Article Not Found</h1>
-                    <Button to="/articles" className="mt-6">Back to Articles</Button>
-                    </div>
-                </section>
-            </div>
-          );
-        }
+useEffect(() => {
+  const load = async () => {
+    try {
+      setLoading(true);
 
-        return (
-            <div className="flex bg-[#6B8754] w-full flex-col gap-6">
-                <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-                  <div className="mx-auto max-w-3xl">
-                    <div className="mb-4">
-                      <Button to="/articles">← Back to Articles</Button>
-                      </div>
-                      <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
-                        Article
-                      </p>
-                      <h1 className="text-3xl font-bold leading-tighttext-zinc-900 sm:text-4xl">
-                        {article.title}
-                        </h1>
-                        <p className="mt-2 text-md text-zinc-500">
-                          {article.name.split('-').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                        </p>
-                    </div>
-                    </section>
-      
-                  {/* Article Image */}
-                  {article.image && (
-                    <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-                      <div className="mx-auto max-w-3xl">
-                        <img
-                          src={article.image}
-                          alt={article.title}
-                          className="w-full h-auto rounded-2xl border-2 border-zinc-900 object-cover"
-                        />
-                      </div>
-                    </section>
-                  )}
+      const { data } = await getArticleBySlug(slug);
 
-                  {/* Article Content */}
-                  <section className="border-y-2 border-zinc-600 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-                    <div className="mx-auto max-w-2xl prose prose-sm max-w-none space-y-2 text-zinc-800">
-                      {article.content.map((paragraph, index) => (
-                        <p key={index} className="text-base text-center leading-4 whitespace-pre-wrap">
-                          {paragraph}
-                        </p>
-                      ))}
-                    </div>
-                    <div className="mx-auto max-w-3xl mt-5 border-t-2 border-zinc-900 pt-6">
-                    <Button to="/articles" variant="primary">← Back to Articles</Button>
-                  </div>
-                  </section>
-                </div>
-              );
-            }
+      console.log("API response:", data);
+
+      setArticle(data.article); // ✅ IMPORTANT
+    } catch (err) {
+      console.error(err);
+      setArticle(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  load();
+}, [slug]);
+
+  const articleImage =
+    article?.image?.trim() ||
+    "https://via.placeholder.com/1200x600?text=No+Image+Available";
+
+  if (loading) {
+    return (
+      <div className="p-6 text-zinc-600">Loading article...</div>
+    );
+  }
+
+  if (!article) {
+    return (
+      <div className="flex w-full flex-col gap-6 min-h-[60vh] px-6">
+        <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6">
+          <div className="mx-auto max-w-3xl">
+            <h1 className="text-3xl font-bold text-zinc-900">
+              Article Not Found
+            </h1>
+            <Button to="/articles" className="mt-6">
+              Back to Articles
+            </Button>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex bg-[#6B8754] w-full flex-col gap-6">
+
+      <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6">
+        <div className="mx-auto max-w-3xl">
+          <Button to="/articles">← Back to Articles</Button>
+
+          <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
+            Article
+          </p>
+
+          <h1 className="text-3xl font-bold text-zinc-900">
+            {article.title}
+          </h1>
+
+          <p className="mt-2 text-zinc-500">
+            {article.slug}
+          </p>
+        </div>
+      </section>
+
+    <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <div className="mx-auto max-w-3xl">
+        <img
+          src={articleImage}
+          alt={article.title}
+          className="w-full h-[220px] sm:h-[320px] md:h-[420px] rounded-2xl border-2 border-zinc-900 object-cover"
+          onError={(e) => {
+            e.target.src =
+              "https://via.placeholder.com/1200x600?text=No+Image+Available";
+          }}
+        />
+      </div>
+    </section>
+
+      <section className="border-y-2 border-zinc-600 bg-zinc-50 px-4 py-6">
+        <div className="mx-auto max-w-2xl space-y-3 text-zinc-800">
+          <p className="text-base whitespace-pre-wrap">
+            {article.content}
+          </p>
+        </div>
+
+        <div className="mx-auto max-w-3xl mt-5 border-t-2 border-zinc-900 pt-6">
+          <Button to="/articles">← Back to Articles</Button>
+        </div>
+      </section>
+
+    </div>
+  );
+}
 
 export default ArticlePage;
-

@@ -19,55 +19,47 @@ function SignInPage() {
 
 
     const handleLogin = async (e) => {
-      e.preventDefault();
+  e.preventDefault();
 
-      try {
-        setError("");
+  try {
+    setError("");
 
-        // Call login API
-        const { data } = await loginUser({
-          email,
-          password,
-        });
+    const { data } = await loginUser({
+      email,
+      password,
+    });
 
-        console.log("Login successful:", data);
+    console.log("Login successful:", data);
 
-        // BLOCK VIEWERS
-        if (user.role === "viewer") {
-          setError("Viewers are not allowed to log in.");
-          return;
-        }
+    if (data.role === "viewer") {
+      setError("Viewers are not allowed to log in.");
+      return;
+    }
 
-        // Save logged in user
-        const loggedInUser = {
-          token: data.token,
-          firstName: data.firstName,
-          role: data.role,
-          email: data.email,
-        };
-
-        localStorage.setItem(
-          "loggedInUser",
-          JSON.stringify(loggedInUser)
-        );
-
-        localStorage.setItem("token", data.token);
-
-        // Navigate to dashboard
-        navigate("/dashboard");
-
-      } catch (err) {
-        console.error(
-          "Login failed:",
-          err.response?.data?.message || err.message
-        );
-
-        setError(
-          err.response?.data?.message ||
-          "Login failed. Please try again."
-        );
-      }
+    const loggedInUser = {
+      token: data.token,
+      firstName: data.firstName,
+      role: data.role,
+      email: data.email,
     };
+
+    localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
+    localStorage.setItem("token", data.token);
+
+    navigate("/dashboard");
+
+  } catch (err) {
+    console.error(
+      "Login failed:",
+      err.response?.data?.message || err.message
+    );
+
+    setError(
+      err.response?.data?.message ||
+      "Login failed. Please try again."
+    );
+  }
+};
 
   return (
     <>

@@ -37,7 +37,7 @@ const routes = [
             path: 'articles',
             element: <ArticleListPage />,
         },
-        {   path: 'articles/:name', // -->articles/learn-react
+        {   path: '/articles/:slug', // -->articles/learn-react
             element: <ArticlePage />},
       ],
     },
