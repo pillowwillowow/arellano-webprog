@@ -180,7 +180,8 @@ const ReportsPage = () => {
             sx={{
               fontFamily: "'Lexend', sans-serif",
               fontSize: 32,
-              fontWeight: 500,
+              fontWeight: 700,
+              color: "#13220d",
             }}
           >
             Reports ⋆‧°𓏲ּ𝄢⋆˚꩜｡

@@ -61,7 +61,7 @@ const ArticleListPage = () => {
           </p>
 
           <h2 className="text-2xl font-bold text-zinc-900">
-            ᭄᭡ Fairy-like Plants to Have ᭄
+            ᭄᭡ A Fairy Stories Must Read ᭄
           </h2>
         </div>
 

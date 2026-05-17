@@ -25,6 +25,8 @@
   import { DataGrid } from "@mui/x-data-grid";
   import { useNavigate } from "react-router-dom";
   import { fetchUsers, createUser, updateUser } from "../../services/UserService";
+  import AddCircleIcon from "@mui/icons-material/AddCircle";
+
 
   const roles = ['admin', 'editor', 'viewer'];
   const genders = ['male', 'female', 'other'];
@@ -65,20 +67,21 @@
     const [loggedInUser, setLoggedInUser] = useState(null);
     const navigate = useNavigate();
 
-    // 1. LOAD LOGGED IN USER
-      useEffect(() => {
+    useEffect(() => {
         const user = JSON.parse(localStorage.getItem("loggedInUser"));
         setLoggedInUser(user);
       }, []);
 
-      // 2. ONLY check after user is loaded
-      useEffect(() => {
-        if (loggedInUser === null) return; // 🔥 IMPORTANT: wait for load
+    useEffect(() => {
+      if (loggedInUser === null) return;
 
-        if (loggedInUser.role !== "admin") {
-          navigate("/dashboard");
-        }
-      }, [loggedInUser, navigate]);
+  {/* Enhancement 1: The editors cannot access the UsersPage. In addition, viewers cannot log in. | DONE */}
+      if (loggedInUser.role !== "admin") {
+        alert("Editors cannot access the Users Page.");
+
+        navigate("/dashboard");
+      }
+    }, [loggedInUser, navigate]);
 
   const loadUsers = async () => {
     try {
@@ -275,6 +278,7 @@
       return nextErrors;
     };
 
+    {/* Enhancement 3: Based on the UsersPage when adding users make the SignUp working. | DONE */}
     const handleSaveUser = async (event) => {
       event.preventDefault();
 
@@ -322,7 +326,6 @@
         );
       }
     };
-
     const handleToggleActive = async (id, isActive) => {
       try {
 
@@ -386,82 +389,83 @@
       renderCell: (params) => {
         const isActive = params.row.isActive;
 
+            return (
+              <Chip
+                size="small"
+                label={isActive ? "Active" : "Inactive"}
+                sx={{
+                  fontWeight: 600,
+                  borderRadius: "8px",
+                  px: 1,
 
-        return (
-          <Chip
-            size="small"
-            label={isActive ? "Active" : "Inactive"}
+                  backgroundColor: isActive ? "#e6f4ea" : "#f3f3f3",
+                  color: isActive ? "#1b5e20" : "#555",
+
+                  border: isActive ? "1px solid #6B8754" : "1px solid #ddd",
+                }}
+              />
+            );
+          },
+        },
+        {
+          field: 'actions',
+          headerName: 'Actions',
+          minWidth: 220,
+          sortable: false,
+          filterable: false,
+          renderCell: (params) => (
+            <Stack direction='row' spacing={1} sx={{ py: 0.5}}>
+              <Button size="small" variant="outlined" 
+              sx={{
+                textTransform: "none",
+                borderRadius: 2,
+                fontSize: "14px",
+                px: 2,
+                color: "#13220d",
+                border: "3px solid #e48c9d"
+              }}
+              onClick={() => handleEdit(params.row)}>
+                Edit
+              </Button>
+              <Button 
+                size="small"
+                variant="contained" 
+                color={params.row.isActive ? 'error' : 'success'} 
+                onClick={() =>
+                handleToggleActive(
+                  params.row.id,
+                  params.row.isActive
+                )
+              }
+              >
+                {params.row.isActive ? 'Deactivate' : 'Activate'}
+              </Button>
+            </Stack>
+          ),
+        },
+      ];
+
+      return (
+        <Box sx={{ width: '100%', minWidth: 0 }}>
+          <Box
             sx={{
-              fontWeight: 600,
-              borderRadius: "8px",
-              px: 1,
-
-              backgroundColor: isActive ? "#e6f4ea" : "#f3f3f3",
-              color: isActive ? "#1b5e20" : "#555",
-
-              border: isActive ? "1px solid #6B8754" : "1px solid #ddd",
-            }}
-          />
-        );
-      },
-    },
-    {
-        field: 'actions',
-        headerName: 'Actions',
-        minWidth: 220,
-        sortable: false,
-        filterable: false,
-        renderCell: (params) => (
-          <Stack direction='row' spacing={1} sx={{ py: 0.5}}>
-            <Button size="small" variant="outlined" 
-            sx={{
-              textTransform: "none",
-              borderRadius: 2,
-              fontSize: "14px",
-              px: 2,
-              color: "#13220d",
-              border: "3px solid #e48c9d"
-            }}
-            onClick={() => handleEdit(params.row)}>
-              Edit
-            </Button>
-            <Button 
-              size="small"
-              variant="contained" 
-              color={params.row.isActive ? 'error' : 'success'} 
-              onClick={() =>
-              handleToggleActive(
-                params.row.id,
-                params.row.isActive
-              )
-            }
-            >
-              {params.row.isActive ? 'Deactivate' : 'Activate'}
-            </Button>
-          </Stack>
-        ),
-      },
-    ];
-
-    return (
-      <Box sx={{ width: '100%', minWidth: 0 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: 1,
-            flexWrap: 'wrap',
-        }}
-      >
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 1,
+              flexWrap: 'wrap',
+          }}
+        >
           <Typography variant="h4" sx={{ py: 2, fontFamily: "'Lexend', sans-serif", fontWeight: 600, color: '#13220d' }}>
             Users ˘͈ᵕ˘͈⸝*
           </Typography>
           <Button
+            startIcon={<AddCircleIcon />}
             variant="contained"
             onClick={openAddModal}
             sx={{
               fontSize: '18px',
+              fontWeight: 700,
               fontFamily: "'Lexend', sans-serif",
               textTransform: 'none',
               px: 3,
@@ -483,7 +487,7 @@
                     },
                   }}
                 >
-            + Add User
+            Add User
           </Button>
         </Box>    
 
@@ -492,8 +496,6 @@
           {loadError}
         </Alert>
       )}
-
-       {/*Enhancement 2: Create and design a search and filter. | DONE */}
 
       <Paper sx={{ background: "#6B8754", borderRadius: 4, p: {xs: 1.5, sm: 2}, minWidth: 0, overflowX: 'hidden' }}>
         {users.length ? (
@@ -597,7 +599,6 @@
           },
         }}
       >
-
         <Box component="form" onSubmit={handleSaveUser}>
           <DialogTitle 
             sx={{
@@ -669,7 +670,6 @@
                     borderRadius: 2,
                   },
                 }}/>
-
               </Stack>
               <Stack direction={{ xs: 'column', sm: 'row'}} spacing={2}>
               <TextField
@@ -729,7 +729,7 @@
                     borderRadius: 2,
                   },
                 }}
-            />  
+             />  
             <FormControlLabel
               control={
                 <Switch

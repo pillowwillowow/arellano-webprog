@@ -18,7 +18,7 @@ function SignInPage() {
   const navigate = useNavigate();
 
 
-    const handleLogin = async (e) => {
+  const handleLogin = async (e) => {
   e.preventDefault();
 
   try {
@@ -128,8 +128,6 @@ function SignInPage() {
             </button>
           </div>
         </div>
-
-        {/* Remember + Forgot */}
         <div className="flex items-center justify-between gap-4 text-sm">
           <label className="flex items-center gap-2 text-zinc-700">
             <input

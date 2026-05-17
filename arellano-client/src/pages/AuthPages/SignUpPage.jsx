@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import { createUser } from "../../services/UserService";
+import { Alert } from "@mui/material";
 
 const inputClasses =
   'mt-2 w-full rounded-xl border border-zinc-300 bg-zinc-100 px-4 py-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-zinc-900 focus:bg-zinc-50';
@@ -48,6 +49,8 @@ const SignUpPage = () => {
       return;
     }
 
+    setError("");
+
     try {
       await createUser({
         firstName: form.firstName,
@@ -81,12 +84,18 @@ const SignUpPage = () => {
         Sign Up
       </h1>
 
-      <p className="mt-3 text-sm leading-6 text-zinc-600">
-        Create your account and step into a world of enchantment.
+      <p className="mt-3 text-sm leading-6 text-[#13220d]">
+        Create your account and step into a world of enchantment!
       </p>
 
       {error && (
-        <p className="mt-4 text-sm text-red-500">{error}</p>
+        <Alert
+          severity="error"
+          sx={{ mt: 1, borderRadius: 3, border: "1px solid #fca5a5", backgroundColor: "#fee2e2", px: 2, fontSize: "14px", color: "#b91c1c", boxShadow: "0 0 10px rgba(255,0,0,0.15)",
+          }}
+        >
+          {error}
+        </Alert>
       )}
 
       <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
@@ -98,6 +107,7 @@ const SignUpPage = () => {
             <input
               id="firstName"
               type="text"
+              placeholder="Yen"
               className={inputClasses}
               onChange={handleChange}
             />
@@ -110,6 +120,7 @@ const SignUpPage = () => {
             <input
               id="lastName"
               type="text"
+              placeholder="Arellano"
               className={inputClasses}
               onChange={handleChange}
             />
@@ -123,6 +134,7 @@ const SignUpPage = () => {
           <input
             id="email"
             type="email"
+            placeholder="name@email.com"
             className={inputClasses}
             onChange={handleChange}
           />
@@ -135,6 +147,7 @@ const SignUpPage = () => {
           <input
             id="password"
             type="password"
+            placeholder="••••••••"
             className={inputClasses}
             onChange={handleChange}
           />

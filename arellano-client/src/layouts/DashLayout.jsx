@@ -212,7 +212,7 @@ const DashLayout = () => {
                             component="div"
                             sx={{ flexGrow: 1, fontFamily: "'Lexend', sans-serif" }}
                             >
-                            {loggedInUser ? `Hello, ${loggedInUser.userName || loggedInUser.firstName}` : "Dashboard"}
+                            {loggedInUser ? `Hello, ${loggedInUser.userName || loggedInUser.firstName} !` : "Dashboard" }
                             </Typography>
                         {/* Search */}
                         <Search>
