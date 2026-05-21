@@ -3,7 +3,7 @@ import constants from '../constants';
 
 //API Access to Front-End JSON data transformation or decoder
 const API = axios.create({
-        baseURL: `${constants.HOST}/users`,
+        baseURL: `${constants.HOST}/api/users`,
     });
 
 // Fetch users
