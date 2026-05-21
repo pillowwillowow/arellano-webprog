@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { LineChart } from '@mui/x-charts/LineChart';
-import { BarChart } from "@mui/x-charts";
+import { BarChart } from "@mui/x-charts/BarChart";
 import { Gauge } from "@mui/x-charts/Gauge";
 import { PieChart } from "@mui/x-charts/PieChart";
 import PrintIcon from "@mui/icons-material/Print";
@@ -359,11 +359,10 @@ const ReportsPage = () => {
               series={[
                 {
                   dataKey: "value",
-                  valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
                 },
               ]}
             />
-          </Card>
+      </Card>
 
         </Stack>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>

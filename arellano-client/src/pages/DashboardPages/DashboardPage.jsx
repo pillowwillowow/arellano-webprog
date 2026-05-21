@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
-import { BarChart } from "@mui/x-charts";
+import { BarChart } from "@mui/x-charts/BarChart";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import { Typography, Card, CardContent } from "@mui/material";
@@ -128,25 +128,25 @@ function DashboardPage() {
             Premier League Net Spend
           </Typography>
 
-        <BarChart
-          height={400}
-          dataset={clubs.map((club, i) => ({
-            club,
-            value: netSpendInPounds[i] ?? 0,
-          }))}
-          xAxis={[
-            {
-              dataKey: "club",
-              scaleType: "band",
-            },
-          ]}
-          series={[
-            {
-              dataKey: "value",
-              xAxisKey: "club", // 🔥 THIS IS THE MISSING PIECE
-            },
-          ]}
-        />
+          <BarChart
+            height={400}
+            dataset={clubs.map((club, i) => ({
+              club,
+              value: netSpendInPounds[i] ?? 0,
+            }))}
+            xAxis={[
+              {
+                id: "clubs-axis",
+                dataKey: "club",
+                scaleType: "band",
+              },
+            ]}
+            series={[
+              {
+                dataKey: "value",
+              },
+            ]}
+          />
         </Card>
 
         {/* PIE CHART */}
