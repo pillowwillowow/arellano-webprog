@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { BarChart } from "@mui/x-charts/BarChart";
 import { DataGrid } from "@mui/x-data-grid";
 import { BarChart } from "@mui/x-charts";
 import Stack from "@mui/material/Stack";
