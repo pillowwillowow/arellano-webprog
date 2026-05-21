@@ -2,7 +2,7 @@ import axios from 'axios';
 import constants from '../constants';
 
 const API = axios.create({
-    baseURL: constants.HOST,
+    baseURL: `${import.meta.env.VITE_API_URL}`,
 });
 
 // Fetch articles
