@@ -12,7 +12,7 @@ import DashArticleListPage from './pages/DashboardPages/DashArticleListPage';
 
 // Auth Pages Structure
 import AuthLayout from './layouts/AuthLayout';
-import SignInPage from './pages/AuthPages/SigninPage';
+import SignInPage from './pages/AuthPages/SignInPage';
 import SignUpPage from './pages/AuthPages/SignUpPage';
 
 import NotFoundPage from './pages/NotFoundPage';
