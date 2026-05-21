@@ -348,6 +348,7 @@ const ReportsPage = () => {
               height={270}
               xAxis={[{
                 data: clubs,
+                scaleType: "band",
                 tickLabelStyle: { angle: 45, fontSize: 12 },
                 height: 60,
               }]}
