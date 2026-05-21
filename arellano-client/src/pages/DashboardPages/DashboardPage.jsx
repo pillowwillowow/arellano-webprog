@@ -133,7 +133,7 @@ function DashboardPage() {
           xAxis={[
             {
               data: clubs,
-              scaleType: "band", // 🔥 REQUIRED FIX
+              scaleType: "band", // ✅ REQUIRED for BarChart
               tickLabelStyle: { angle: 45, fontSize: 10 },
               height: 80,
             },
