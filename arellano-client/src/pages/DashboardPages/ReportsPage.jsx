@@ -5,8 +5,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
-import { BarChart } from "@mui/x-charts/BarChart";
 import { Gauge } from "@mui/x-charts/Gauge";
 import { PieChart } from "@mui/x-charts/PieChart";
 import PrintIcon from "@mui/icons-material/Print";
@@ -346,23 +346,22 @@ const ReportsPage = () => {
 
             <BarChart
               height={270}
-              dataset={clubs.map((club, i) => ({
-                club,
-                value: netSpendInPounds[i] ?? 0,
-              }))}
-              xAxis={[
-                {
-                  dataKey: "club",
-                  scaleType: "band",
-                },
-              ]}
-              series={[
-                {
-                  dataKey: "value",
-                },
-              ]}
+              xAxis={[{
+                data: clubs,
+                tickLabelStyle: { angle: 45, fontSize: 12 },
+                height: 60,
+              }]}
+              yAxis={[{
+                width: 50,
+                valueFormatter: (v) => v < 0 ? `-£${-v}m` : `£${v}m`,
+              }]}
+              series={[{
+                data: netSpendInPounds,
+                valueFormatter: (v) => v < 0 ? `-£${-v}m` : `£${v}m`,
+                colorGetter: (params) => clubColors[params.dataIndex],
+              }]}
             />
-      </Card>
+          </Card>
 
         </Stack>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>

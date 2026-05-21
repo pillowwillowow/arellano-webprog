@@ -129,24 +129,23 @@ function DashboardPage() {
           </Typography>
 
           <BarChart
-            height={400}
-            dataset={clubs.map((club, i) => ({
-              club,
-              value: netSpendInPounds[i] ?? 0,
-            }))}
-            xAxis={[
-              {
-                id: "clubs-axis",
-                dataKey: "club",
-                scaleType: "band",
-              },
-            ]}
-            series={[
-              {
-                dataKey: "value",
-              },
-            ]}
-          />
+          dataset={clubs.map((club, i) => ({
+            club,
+            value: netSpendInPounds[i] ?? 0,
+          }))}
+          xAxis={[
+            {
+              dataKey: "club",
+              scaleType: "band", // MUST be here
+            },
+          ]}
+          series={[
+            {
+              dataKey: "value",
+            },
+          ]}
+          height={400}
+        />
         </Card>
 
         {/* PIE CHART */}
