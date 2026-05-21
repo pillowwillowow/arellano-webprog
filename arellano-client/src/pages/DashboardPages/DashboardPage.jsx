@@ -128,30 +128,30 @@ function DashboardPage() {
             Premier League Net Spend
           </Typography>
 
-          <BarChart
-            height={400}
-            xAxis={[
-              {
-                data: clubs,
-                tickLabelStyle: { angle: 45, fontSize: 10 },
-                height: 80,
-              },
-            ]}
-            yAxis={[
-              {
-                width: 50,
-                valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
-              },
-            ]}
-            series={[
-              {
-                data: netSpendInPounds,
-                valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
-                colorGetter: (params) =>
-                clubColors[params.dataIndex],
-              },
-            ]}
-          />
+        <BarChart
+          height={400}
+          xAxis={[
+            {
+              data: clubs,
+              scaleType: "band", // 🔥 REQUIRED FIX
+              tickLabelStyle: { angle: 45, fontSize: 10 },
+              height: 80,
+            },
+          ]}
+          yAxis={[
+            {
+              width: 50,
+              valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
+            },
+          ]}
+          series={[
+            {
+              data: netSpendInPounds,
+              valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
+              colorGetter: (params) => clubColors[params.dataIndex],
+            },
+          ]}
+        />
         </Card>
 
         {/* PIE CHART */}
