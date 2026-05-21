@@ -128,27 +128,25 @@ function DashboardPage() {
             Premier League Net Spend
           </Typography>
 
-       <BarChart
-        height={400}
-        dataset={clubs.map((club, i) => ({
-          club,
-          value: netSpendInPounds[i] ?? 0,
-        }))}
-        xAxis={[
-          {
-            dataKey: "club",
-            scaleType: "band",
-            tickLabelStyle: { angle: 45, fontSize: 10 },
-            height: 80,
-          },
-        ]}
-        series={[
-          {
-            dataKey: "value",
-            valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
-          },
-        ]}
-      />
+        <BarChart
+          height={400}
+          dataset={clubs.map((club, i) => ({
+            club,
+            value: netSpendInPounds[i] ?? 0,
+          }))}
+          xAxis={[
+            {
+              dataKey: "club",
+              scaleType: "band",
+            },
+          ]}
+          series={[
+            {
+              dataKey: "value",
+              xAxisKey: "club", // 🔥 THIS IS THE MISSING PIECE
+            },
+          ]}
+        />
         </Card>
 
         {/* PIE CHART */}

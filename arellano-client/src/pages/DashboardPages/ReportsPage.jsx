@@ -5,7 +5,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { BarChart } from '@mui/x-charts/BarChart';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { BarChart } from "@mui/x-charts";
 import { Gauge } from "@mui/x-charts/Gauge";
@@ -350,14 +349,11 @@ const ReportsPage = () => {
               dataset={clubs.map((club, i) => ({
                 club,
                 value: netSpendInPounds[i] ?? 0,
-                color: clubColors[i],
               }))}
               xAxis={[
                 {
                   dataKey: "club",
                   scaleType: "band",
-                  tickLabelStyle: { angle: 45, fontSize: 12 },
-                  height: 60,
                 },
               ]}
               series={[
