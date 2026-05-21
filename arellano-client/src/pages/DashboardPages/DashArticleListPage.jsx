@@ -64,20 +64,26 @@ const DashArticleListPage = () => {
 {/* Enhancement 2: Base on UsersPage create a DashArticleListPage with this consideration:
 • The articles will be available on ArticleListPage. | DONE */}
 
-      const { data } = await fetchArticles();
+    const { data } = await fetchArticles();
 
-      setArticles(data?.articles || []);
-    } catch (error) {
-      console.error("Error loading articles:", error);
-      setLoadError("Failed to load articles.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const formattedArticles = (data?.articles || []).map((article, index) => ({
+      ...article,
+      customId: `ELF-${index + 1}`,
+    }));
 
-  useEffect(() => {
-    loadArticles();
-  }, []);
+        setArticles(formattedArticles);
+
+      } catch (error) {
+        console.error("Error loading articles:", error);
+        setLoadError("Failed to load articles.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    useEffect(() => {
+      loadArticles();
+    }, []);
 
   const filteredArticles = articles.filter((article) => {
     const matchesSearch =
@@ -219,10 +225,9 @@ const DashArticleListPage = () => {
 
   const columns = [
     {
-      field: "_id",
-      headerName: "ID",
-      width: 100,
-      valueGetter: (value) => value?.slice(-6),
+      field: "customId",
+      headerName: "Article ID",
+      width: 140,
     },
 
     {
@@ -364,10 +369,11 @@ const DashArticleListPage = () => {
           sx={{
             background: fairyPink,
             fontFamily: "'Lexend', sans-serif",
-            fontSize: "18px",
+            fontSize: "20px",
             color: darkGreen,
             fontWeight: 700,
             textTransform: "none",
+            py: 2,
             borderRadius: 3,
 
             "&:hover": {

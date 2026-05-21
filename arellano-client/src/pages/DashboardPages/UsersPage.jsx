@@ -66,22 +66,20 @@
     const [statusFilter, setStatusFilter] = useState("");
     const [loggedInUser, setLoggedInUser] = useState(null);
     const navigate = useNavigate();
-
-    useEffect(() => {
+      useEffect(() => {
         const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        if (!user) {
+          navigate("/");
+          return;
+        }
+
         setLoggedInUser(user);
-      }, []);
 
-    useEffect(() => {
-      if (loggedInUser === null) return;
-
-  {/* Enhancement 1: The editors cannot access the UsersPage. In addition, viewers cannot log in. | DONE */}
-      if (loggedInUser.role !== "admin") {
-        alert("Editors cannot access the Users Page.");
-
-        navigate("/dashboard");
-      }
-    }, [loggedInUser, navigate]);
+        if (user.role !== "admin") {
+          navigate("/dashboard", { replace: true });
+        }
+      }, [navigate]);
 
   const loadUsers = async () => {
     try {
@@ -388,6 +386,10 @@
       minWidth: 120,
       renderCell: (params) => {
         const isActive = params.row.isActive;
+
+        if (loggedInUser === null) {
+        return null;
+    }
 
             return (
               <Chip

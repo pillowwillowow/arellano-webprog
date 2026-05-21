@@ -26,6 +26,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import { useEffect } from 'react';
 
 const drawerWidth = 240;
+const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 const dashboardNavItems = [
     {
         label: 'Dashboard',
@@ -39,12 +40,14 @@ const dashboardNavItems = [
         to: "/dashboard/reports",
         icon: <AssessmentIcon />
     },
-    {
-        label: 'Users',
-        title: 'Users',
-        to: "/dashboard/users",
-        icon: <PeopleIcon />
-    },
+ ...(loggedInUser?.role === "admin"
+        ? [{
+            label: 'Users',
+            title: 'Users',
+            to: "/dashboard/users",
+            icon: <PeopleIcon />
+        }]
+        : []),
     {
         label: "Articles",
         to: "/dashboard/dasharticles",
