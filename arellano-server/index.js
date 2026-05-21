@@ -22,7 +22,7 @@ app.use(cors());
 
 // vercel option 
 const corsOptions = {
-    origin: "*",
+    origin: "https://arellano-webprog.vercel.app/",
     credentials: true, // allow credentials
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
