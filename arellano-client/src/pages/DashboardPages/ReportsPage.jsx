@@ -346,21 +346,20 @@ const ReportsPage = () => {
 
             <BarChart
               height={270}
-              dataset={clubs.map((club, i) => ({
-                club,
-                value: netSpendInPounds[i] ?? 0,
-              }))}
-              xAxis={[
-                {
-                  dataKey: "club",
-                  scaleType: "band",
-                },
-              ]}
-              series={[
-                {
-                  dataKey: "value",
-                },
-              ]}
+              xAxis={[{
+                data: clubs,
+                tickLabelStyle: { angle: 45, fontSize: 12 },
+                height: 60,
+              }]}
+              yAxis={[{
+                width: 50,
+                valueFormatter: (v) => v < 0 ? `-£${-v}m` : `£${v}m`,
+              }]}
+              series={[{
+                data: netSpendInPounds,
+                valueFormatter: (v) => v < 0 ? `-£${-v}m` : `£${v}m`,
+                colorGetter: (params) => clubColors[params.dataIndex],
+              }]}
             />
           </Card>
 
