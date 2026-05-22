@@ -346,20 +346,26 @@ const ReportsPage = () => {
 
             <BarChart
               height={270}
-              xAxis={[{
-                data: clubs,
-                tickLabelStyle: { angle: 45, fontSize: 12 },
-                height: 60,
-              }]}
-              yAxis={[{
-                width: 50,
-                valueFormatter: (v) => v < 0 ? `-£${-v}m` : `£${v}m`,
-              }]}
-              series={[{
-                data: netSpendInPounds,
-                valueFormatter: (v) => v < 0 ? `-£${-v}m` : `£${v}m`,
-                colorGetter: (params) => clubColors[params.dataIndex],
-              }]}
+              xAxis={[
+                {
+                  data: clubs,
+                  scaleType: "band",
+                  tickLabelStyle: { angle: 45, fontSize: 12 },
+                  height: 60,
+                },
+              ]}
+              yAxis={[
+                {
+                  width: 50,
+                  valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
+                },
+              ]}
+              series={[
+                {
+                  data: netSpendInPounds,
+                  valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
+                },
+              ]}
             />
           </Card>
 

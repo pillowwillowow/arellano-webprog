@@ -127,12 +127,13 @@ function DashboardPage() {
           <Typography sx={{ mb: 2, fontWeight: 600 }}>
             Premier League Net Spend
           </Typography>
-
+          
           <BarChart
             height={400}
             xAxis={[
               {
                 data: clubs,
+                scaleType: "band",
                 tickLabelStyle: { angle: 45, fontSize: 10 },
                 height: 80,
               },
@@ -147,8 +148,6 @@ function DashboardPage() {
               {
                 data: netSpendInPounds,
                 valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
-                colorGetter: (params) =>
-                clubColors[params.dataIndex],
               },
             ]}
           />
