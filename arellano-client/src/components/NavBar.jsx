@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import bgImage from "../assets/images/whip.jpg";
 import logo from "../assets/images/glow.png";
 
 const mainLinks = [
@@ -21,10 +20,8 @@ const NavBar = () => {
     <header
       className="fixed inset-x-0 top-0 z-30 border-b-2 border-zinc-900"
       style={{
-        backgroundImage: `url(${bgImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
+      background: "linear-gradient(135deg, #6B8754, #A3B18A)",
+    }}
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
 
