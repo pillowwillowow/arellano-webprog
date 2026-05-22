@@ -403,29 +403,100 @@ const ReportsPage = () => {
 
         </Stack>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+            {/* PIE CHART */}
+            <Card
+              sx={{
+                flex: 1,
+                borderRadius: 3,
+                p: 1,
+                boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
+                transition: "0.3s",
+                background: "#fff",
 
-          {/* PIE */}
-          <Card sx={{ flex: 1, borderRadius: 2 }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, fontFamily: "'Lexend', sans-serif", fontWeight: 600}}>
-                Category Share
-              </Typography>
-              <PieChart
-                series={[
-                  {
-                    data: [
-                      { id: 1, value: 14, label: "Sales" },
-                      { id: 2, value: 10, label: "Users" },
-                      { id: 3, value: 8, label: "Inventory" },
-                      { id: 4, value: 6, label: "Finance" },
-                    ],
-                  },
-                ]}
-                width={200}
-                height={200}
-              />
-            </CardContent>
-          </Card>
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
+                },
+              }}
+            >
+              <CardContent>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    mb: 2,
+                    fontFamily: "'Lexend', sans-serif",
+                    fontWeight: 600,
+                    color: "#13220d",
+                  }}
+                >
+                  Category Share
+                </Typography>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <PieChart
+                    width={320}
+                    height={220}
+                    series={[
+                      {
+                        innerRadius: 45,
+                        outerRadius: 90,
+                        paddingAngle: 3,
+                        cornerRadius: 6,
+                        cx: 110,
+                        cy: 100,
+
+                        data: [
+                          {
+                            id: 1,
+                            value: 14,
+                            label: "Sales",
+                            color: "#6B8754",
+                          },
+                          {
+                            id: 2,
+                            value: 10,
+                            label: "Users",
+                            color: "#e48c9d",
+                          },
+                          {
+                            id: 3,
+                            value: 8,
+                            label: "Inventory",
+                            color: "#f5c16c",
+                          },
+                          {
+                            id: 4,
+                            value: 6,
+                            label: "Finance",
+                            color: "#8b5cf6",
+                          },
+                        ],
+                      },
+                    ]}
+                    slotProps={{
+                      legend: {
+                        direction: "column",
+                        position: {
+                          vertical: "middle",
+                          horizontal: "right",
+                        },
+                        padding: 0,
+                        labelStyle: {
+                          fontFamily: "'Lexend', sans-serif",
+                          fontSize: 12,
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+              </CardContent>
+            </Card>
 
           {/* GAUGE */}
           <Card
