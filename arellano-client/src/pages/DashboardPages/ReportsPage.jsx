@@ -345,27 +345,59 @@ const ReportsPage = () => {
             </Typography>
 
             <BarChart
-              height={270}
+              height={350}
+              margin={{ bottom: 100, left: 60, right: 20, top: 20 }}
               xAxis={[
                 {
                   data: clubs,
                   scaleType: "band",
-                  tickLabelStyle: { angle: 45, fontSize: 12 },
-                  height: 60,
+                  tickLabelStyle: {
+                    angle: -45,
+                    textAnchor: "end",
+                    fontSize: 11,
+                    fontFamily: "'Lexend', sans-serif",
+                  },
                 },
               ]}
               yAxis={[
                 {
-                  width: 50,
-                  valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
+                  width: 60,
+                  valueFormatter: (v) =>
+                    v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
+                  tickLabelStyle: {
+                    fontSize: 11,
+                    fontFamily: "'Lexend', sans-serif",
+                  },
                 },
               ]}
               series={[
                 {
                   data: netSpendInPounds,
-                  valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
+                  valueFormatter: (v) =>
+                    v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
+                  color: "#6B8754",
                 },
               ]}
+              borderRadius={5}
+              grid={{ horizontal: true }}
+              sx={{
+                "& .MuiBarElement-root": {
+                  transition: "0.3s ease",
+                },
+
+                "& .MuiBarElement-root:hover": {
+                  opacity: 0.8,
+                },
+
+                "& .MuiChartsAxis-tickLabel": {
+                  fill: "#18181b",
+                },
+
+                "& .MuiChartsGrid-line": {
+                  stroke: "rgba(0,0,0,0.08)",
+                  strokeDasharray: "4 4",
+                },
+              }}
             />
           </Card>
 
