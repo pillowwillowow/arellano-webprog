@@ -209,22 +209,71 @@ function DashboardPage() {
             Distribution
           </Typography>
 
-          <PieChart
-            width={250}
-            height={250}
-            series={[
-              {
-                data: [
-                  { id: 0, value: 60, label: "A" },
-                  { id: 1, value: 80, label: "B" },
-                  { id: 2, value: 20, label: "C" },
-                  { id: 3, value: 10, label: "D" },
-                ],
-              },
-            ]}
-          />
-        </Card>
-      </Stack>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <PieChart
+                    width={250}
+                    height={250}
+                    series={[
+                      {
+                        innerRadius: 45,
+                        outerRadius: 90,
+                        paddingAngle: 3,
+                        cornerRadius: 6,
+                        cx: 110,
+                        cy: 100,
+
+                        data: [
+                          {
+                            id: 1,
+                            value: 14,
+                            label: "Sales",
+                            color: "#6B8754",
+                          },
+                          {
+                            id: 2,
+                            value: 10,
+                            label: "Users",
+                            color: "#e48c9d",
+                          },
+                          {
+                            id: 3,
+                            value: 8,
+                            label: "Inventory",
+                            color: "#f5c16c",
+                          },
+                          {
+                            id: 4,
+                            value: 6,
+                            label: "Finance",
+                            color: "#8b5cf6",
+                          },
+                        ],
+                      },
+                    ]}
+                    slotProps={{
+                      legend: {
+                        direction: "column",
+                        position: {
+                          vertical: "middle",
+                          horizontal: "right",
+                        },
+                        padding: 0,
+                        labelStyle: {
+                          fontFamily: "'Lexend', sans-serif",
+                          fontSize: 12,
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+            </Card>
+          </Stack>
 
       <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
 
