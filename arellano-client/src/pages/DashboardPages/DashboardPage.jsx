@@ -123,76 +123,103 @@ function DashboardPage() {
       <Stack direction={{ xs: "column", md: "row" }} spacing={3} sx={{ mb: 3 }}>
 
         {/* BAR CHART */}
-        <Card sx={{ ...dashboardCardSx, flex: 2 }}>
-          <Typography sx={{ mb: 2, fontWeight: 600 }}>
+        <Card
+          sx={{
+            ...dashboardCardSx,
+            flex: 2,
+            p: 2,
+            overflow: "hidden",
+          }}
+        >
+          <Typography
+            sx={{
+              mb: 2,
+              fontWeight: 600,
+              fontFamily: "'Lexend', sans-serif",
+              color: "#13220d",
+            }}
+          >
             Premier League Net Spend
           </Typography>
 
-          <BarChart
-            height={400}
-            xAxis={[
-              {
-                data: clubs,
-                scaleType: "band",
-                tickLabelStyle: {
-                  angle: 45,
-                  fontSize: 10,
+          <Box sx={{ width: "100%", overflowX: "auto" }}>
+            <BarChart
+              height={420}
+              margin={{
+                top: 20,
+                right: 20,
+                bottom: 90,
+                left: 60,
+              }}
+              xAxis={[
+                {
+                  data: clubs,
+                  scaleType: "band",
+
+                  tickLabelStyle: {
+                    angle: -35,
+                    textAnchor: "end",
+                    fontSize: 11,
+                    fontFamily: "'Lexend', sans-serif",
+                  },
+                },
+              ]}
+              yAxis={[
+                {
+                  width: 60,
+
+                  valueFormatter: (v) =>
+                    v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
+
+                  tickLabelStyle: {
+                    fontFamily: "'Lexend', sans-serif",
+                    fontSize: 11,
+                  },
+                },
+              ]}
+              series={[
+                {
+                  data: netSpendInPounds,
+
+                  valueFormatter: (v) =>
+                    v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
+
+                  color: "#6B8754",
+                },
+              ]}
+              borderRadius={6}
+              grid={{ horizontal: true }}
+              sx={{
+                "& .MuiChartsAxis-line": {
+                  stroke: "#d4d4d8",
+                },
+
+                "& .MuiChartsAxis-tick": {
+                  stroke: "#d4d4d8",
+                },
+
+                "& .MuiChartsGrid-line": {
+                  stroke: "rgba(0,0,0,0.08)",
+                  strokeDasharray: "4 4",
+                },
+
+                "& .MuiBarElement-root": {
+                  fill: "#6B8754",
+                  filter: "drop-shadow(0px 4px 6px rgba(0,0,0,0.15))",
+                  transition: "0.25s ease",
+                },
+
+                "& .MuiBarElement-root:hover": {
+                  fill: "#4b6337",
+                },
+
+                "& .MuiChartsAxis-tickLabel": {
+                  fill: "#18181b",
                   fontFamily: "'Lexend', sans-serif",
                 },
-                height: 80,
-              },
-            ]}
-            yAxis={[
-              {
-                width: 50,
-                valueFormatter: (v) =>
-                  v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
-                tickLabelStyle: {
-                  fontFamily: "'Lexend', sans-serif",
-                  fontSize: 11,
-                },
-              },
-            ]}
-            series={[
-              {
-                data: netSpendInPounds,
-                valueFormatter: (v) =>
-                  v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
-                color: "#6B8754",
-              },
-            ]}
-            borderRadius={6}
-            grid={{ horizontal: true }}
-            sx={{
-              "& .MuiChartsAxis-line": {
-                stroke: "#d4d4d8",
-              },
-
-              "& .MuiChartsAxis-tick": {
-                stroke: "#d4d4d8",
-              },
-
-              "& .MuiChartsGrid-line": {
-                stroke: "rgba(0,0,0,0.08)",
-                strokeDasharray: "4 4",
-              },
-
-              "& .MuiBarElement-root": {
-                fill: "#6B8754",
-                filter: "drop-shadow(0px 4px 6px rgba(0,0,0,0.15))",
-                transition: "0.3s ease",
-              },
-
-              "& .MuiBarElement-root:hover": {
-                fill: "#4b6337",
-              },
-
-              "& .MuiChartsAxis-tickLabel": {
-                fill: "#18181b",
-                fontFamily: "'Lexend', sans-serif",
-              },
-            }}
-          />
+              }}
+            />
+          </Box>
         </Card>
 
         {/* PIE CHART */}
@@ -206,7 +233,7 @@ function DashboardPage() {
           }}
         >
           <Typography sx={{ mb: 2, fontWeight: 600 }}>
-            Distribution
+            Category Share
           </Typography>
 
                 <Box
