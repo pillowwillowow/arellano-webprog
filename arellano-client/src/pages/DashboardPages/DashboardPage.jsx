@@ -54,13 +54,6 @@ const netSpendInPounds = [
   69.7, 57.8, 18.93, 9.5, -8, -14.7, -23, -58.9, -63.3, -68.15,
 ];
 
-const clubColors = [
-  "#EF0107","#C8102E","#DA291C","#132257","#003399","#E03A3E",
-  "#241F20","#DD0000","#FFCD00","#6CABDD","#7A263A","#6C1D45",
-  "#CC0000","#034694","#670E36","#FDB913","#1B458F","#E30613",
-  "#DA291C","#0057B8",
-];
-
 const dashboardCardSx = {
   borderRadius: 3,
   boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
@@ -227,6 +220,7 @@ function DashboardPage() {
               sx={{
                 flex: 1,
                 borderRadius: 3,
+                alignSelf: "flex-start",
                 p: 2,
                 boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
                 transition: "0.3s",

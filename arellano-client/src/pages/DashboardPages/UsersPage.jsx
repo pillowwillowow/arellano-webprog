@@ -651,6 +651,8 @@
               px: { xs: 2, sm: 3 },
               py: 3,
               background: "#A3B18A",
+              maxHeight: "70vh",  
+              overflowY: "auto",
             }}>
             <Stack spacing={2} sx={{ pt: 1 }}>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
