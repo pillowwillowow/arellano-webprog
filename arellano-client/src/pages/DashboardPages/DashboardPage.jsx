@@ -220,7 +220,7 @@ function DashboardPage() {
               sx={{
                 flex: 1,
                 borderRadius: 3,
-                p: 2,
+                p: 1.5,
                 boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
                 transition: "0.3s",
 
@@ -232,7 +232,7 @@ function DashboardPage() {
             >
               <Typography
                 sx={{
-                  mb: 2,
+                  mb: 1,
                   fontWeight: 600,
                   fontFamily: "'Lexend', sans-serif",
                   color: "#13220d",
@@ -246,11 +246,12 @@ function DashboardPage() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  height: 260,
                 }}
               >
               <PieChart
                   width={250}
-                  height={300}
+                  height={250}
                   series={[
                     {
                       innerRadius: 45,
