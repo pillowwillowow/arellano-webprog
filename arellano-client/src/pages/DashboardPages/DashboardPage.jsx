@@ -226,9 +226,6 @@ function DashboardPage() {
             <Card
               sx={{
                 flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
                 borderRadius: 3,
                 p: 2,
                 boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
@@ -259,9 +256,10 @@ function DashboardPage() {
                   width: "100%",
                 }}
               >
-                <PieChart
+              <PieChart
                   width={250}
-                  height={250}
+                  height={220}
+                  margin={{ top: 10, bottom: 10, left: 10, right: 10 }}
                   series={[
                     {
                       innerRadius: 45,
