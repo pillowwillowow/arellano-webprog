@@ -224,110 +224,67 @@ function DashboardPage() {
 
         {/* PIE CHART */}
         <Card
-          sx={{
-            flex: 1,
-            borderRadius: 3,
-            p: 2,
-            boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
-            transition: "0.3s",
-
-            "&:hover": {
-              transform: "translateY(-4px)",
-              boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              mb: 2,
-              fontWeight: 600,
-              fontFamily: "'Lexend', sans-serif",
-              color: "#13220d",
-            }}
-          >
-            Category Share
-          </Typography>
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              overflow: "hidden",
-            }}
-          >
-            <PieChart
-              width={360}
-              height={240}
-              margin={{ right: 120 }}
-
-              series={[
-                {
-                  innerRadius: 50,
-                  outerRadius: 85,
-                  paddingAngle: 3,
-                  cornerRadius: 5,
-
-                  cx: 90,
-                  cy: 110,
-
-                  data: [
-                    {
-                      id: 1,
-                      value: 14,
-                      label: "Sales",
-                      color: "#6B8754",
-                    },
-                    {
-                      id: 2,
-                      value: 10,
-                      label: "Users",
-                      color: "#e48c9d",
-                    },
-                    {
-                      id: 3,
-                      value: 8,
-                      label: "Inventory",
-                      color: "#f5c16c",
-                    },
-                    {
-                      id: 4,
-                      value: 6,
-                      label: "Finance",
-                      color: "#8b5cf6",
-                    },
-                  ],
-                },
-              ]}
-
-              slotProps={{
-                legend: {
-                  direction: "column",
-
-                  position: {
-                    vertical: "middle",
-                    horizontal: "right",
-                  },
-
-                  padding: 0,
-
-                  labelStyle: {
-                    fontFamily: "'Lexend', sans-serif",
-                    fontSize: 12,
-                    fill: "#18181b",
-                  },
-                },
-              }}
-
               sx={{
-                "& .MuiChartsLegend-label": {
-                  fontFamily: "'Lexend', sans-serif",
+                flex: 1,
+                borderRadius: 3,
+                p: 2,
+                boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
+                transition: "0.3s",
+
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
                 },
               }}
-            />
-          </Box>
-        </Card>
+            >
+              <Typography
+                sx={{
+                  mb: 2,
+                  fontWeight: 600,
+                  fontFamily: "'Lexend', sans-serif",
+                  color: "#13220d",
+                }}
+              >
+                Category Share
+              </Typography>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <PieChart
+                  width={250}
+                  height={250}
+                  series={[
+                    {
+                      innerRadius: 45,
+                      outerRadius: 90,
+                      paddingAngle: 2,
+                      cornerRadius: 5,
+
+                      data: [
+                        { id: 0, value: 60, label: "A", color: "#6B8754" },
+                        { id: 1, value: 80, label: "B", color: "#e48c9d" },
+                        { id: 2, value: 20, label: "C", color: "#f5c16c" },
+                        { id: 3, value: 10, label: "D", color: "#8b5cf6" },
+                      ],
+                    },
+                  ]}
+                  slotProps={{
+                    legend: {
+                      labelStyle: {
+                        fontFamily: "'Lexend', sans-serif",
+                        fontSize: 12,
+                      },
+                    },
+                  }}
+                />
+              </Box>
+            </Card>
           </Stack>
 
       <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
