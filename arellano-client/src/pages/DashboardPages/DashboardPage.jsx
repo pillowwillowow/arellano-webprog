@@ -258,8 +258,7 @@ function DashboardPage() {
               >
               <PieChart
                   width={250}
-                  height={220}
-                  margin={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                  height={250}
                   series={[
                     {
                       innerRadius: 45,
@@ -288,7 +287,7 @@ function DashboardPage() {
             </Card>
           </Stack>
 
-      <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
+      <Stack direction={{ xs: "column", md: "row" }} spacing={3} alignItems="flex-start">
 
         {/* DATA GRID */}
         <Card sx={{ ...dashboardCardSx, flex: 1 }}>
