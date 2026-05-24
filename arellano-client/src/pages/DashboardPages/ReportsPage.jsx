@@ -403,6 +403,7 @@ const ReportsPage = () => {
 
         </Stack>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+          
             {/* PIE CHART */}
             <Card
               sx={{

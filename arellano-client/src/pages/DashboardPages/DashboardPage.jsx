@@ -246,13 +246,11 @@ function DashboardPage() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  width: "100%",
-                  flex: 1,
                 }}
               >
               <PieChart
                   width={250}
-                  height={250}
+                  height={300}
                   series={[
                     {
                       innerRadius: 45,
