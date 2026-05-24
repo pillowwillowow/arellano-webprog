@@ -121,6 +121,7 @@ function DashboardPage() {
             ...dashboardCardSx,
             flex: 2,
             p: 2,
+            height: "100%",
             overflow: "hidden",
           }}
         >
@@ -220,8 +221,8 @@ function DashboardPage() {
               sx={{
                 flex: 1,
                 borderRadius: 3,
-                alignSelf: "flex-start",
                 p: 2,
+                height: "100%",
                 boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
                 transition: "0.3s",
 
@@ -248,6 +249,7 @@ function DashboardPage() {
                   justifyContent: "center",
                   alignItems: "center",
                   width: "100%",
+                  flex: 1,
                 }}
               >
               <PieChart
@@ -281,7 +283,7 @@ function DashboardPage() {
             </Card>
           </Stack>
 
-      <Stack direction={{ xs: "column", md: "row" }} spacing={3} alignItems="flex-start">
+      <Stack direction={{ xs: "column", md: "row" }} spacing={3} alignItems="stretch">
 
         {/* DATA GRID */}
         <Card sx={{ ...dashboardCardSx, flex: 1 }}>
