@@ -220,7 +220,7 @@ function DashboardPage() {
               sx={{
                 flex: 1,
                 borderRadius: 3,
-                p: 1.5,
+                flexDirection: "column",
                 boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
                 transition: "0.3s",
 
@@ -243,15 +243,15 @@ function DashboardPage() {
 
               <Box
                 sx={{
+                  flex: 1,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  height: 260,
                 }}
               >
               <PieChart
                   width={250}
-                  height={250}
+                  height={240}
                   series={[
                     {
                       innerRadius: 45,
