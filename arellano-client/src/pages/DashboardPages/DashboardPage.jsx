@@ -205,7 +205,7 @@ function DashboardPage() {
             alignItems: "center",
           }}
         >
-          <Typography sx={{ mb: 2, fontWeight: 600 }}>
+          <Typography sx={{ mb: 2, fontWeight: 600, alignSelf: "flex-start" }}>
             Distribution
           </Typography>
 
