@@ -222,8 +222,8 @@ function DashboardPage() {
           </Box>
         </Card>
 
-        {/* PIE CHART */}
-        <Card
+          {/* PIE CHART */}
+            <Card
               sx={{
                 flex: 1,
                 borderRadius: 3,
@@ -258,7 +258,7 @@ function DashboardPage() {
               >
                 <PieChart
                   width={250}
-                  height={250}
+                  height={200}
                   series={[
                     {
                       innerRadius: 45,
