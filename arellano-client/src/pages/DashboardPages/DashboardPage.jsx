@@ -210,16 +210,14 @@ function DashboardPage() {
           </Typography>
 
           <PieChart
-            width={250}
-            height={250}
+            width={280}
+            height={280}
             series={[
               {
                 innerRadius: 45,
                 outerRadius: 90,
                 paddingAngle: 3,
                 cornerRadius: 6,
-                cx: 110,
-                cy: 100,
 
                 data: [
                   {
@@ -247,6 +245,7 @@ function DashboardPage() {
                     color: "#8b5cf6",
                   },
                 ],
+              valueFormatter: () => "",
               },
             ]}
           />
