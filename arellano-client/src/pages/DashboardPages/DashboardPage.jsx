@@ -54,6 +54,13 @@ const netSpendInPounds = [
   69.7, 57.8, 18.93, 9.5, -8, -14.7, -23, -58.9, -63.3, -68.15,
 ];
 
+const clubColors = [
+  "#EF0107","#C8102E","#DA291C","#132257","#003399","#E03A3E",
+  "#241F20","#DD0000","#FFCD00","#6CABDD","#7A263A","#6C1D45",
+  "#CC0000","#034694","#670E36","#FDB913","#1B458F","#E30613",
+  "#DA291C","#0057B8",
+];
+
 const dashboardCardSx = {
   borderRadius: 3,
   boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
@@ -116,169 +123,135 @@ function DashboardPage() {
       <Stack direction={{ xs: "column", md: "row" }} spacing={3} sx={{ mb: 3 }}>
 
         {/* BAR CHART */}
-        <Card
-          sx={{
-            ...dashboardCardSx,
-            flex: 2,
-            p: 2,
-            overflow: "hidden",
-          }}
-        >
-          <Typography
-            sx={{
-              mb: 2,
-              fontWeight: 600,
-              fontFamily: "'Lexend', sans-serif",
-              color: "#13220d",
-            }}
-          >
+        <Card sx={{ ...dashboardCardSx, flex: 2 }}>
+          <Typography sx={{ mb: 2, fontWeight: 600 }}>
             Premier League Net Spend
           </Typography>
 
-          <Box sx={{ width: "100%", overflowX: "auto" }}>
-            <BarChart
-              height={420}
-              margin={{
-                top: 20,
-                right: 20,
-                bottom: 90,
-                left: 60,
-              }}
-              xAxis={[
-                {
-                  data: clubs,
-                  scaleType: "band",
-
-                  tickLabelStyle: {
-                    angle: -35,
-                    textAnchor: "end",
-                    fontSize: 11,
-                    fontFamily: "'Lexend', sans-serif",
-                  },
-                },
-              ]}
-              yAxis={[
-                {
-                  width: 60,
-
-                  valueFormatter: (v) =>
-                    v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
-
-                  tickLabelStyle: {
-                    fontFamily: "'Lexend', sans-serif",
-                    fontSize: 11,
-                  },
-                },
-              ]}
-              series={[
-                {
-                  data: netSpendInPounds,
-
-                  valueFormatter: (v) =>
-                    v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
-
-                  color: "#6B8754",
-                },
-              ]}
-              borderRadius={6}
-              grid={{ horizontal: true }}
-              sx={{
-                "& .MuiChartsAxis-line": {
-                  stroke: "#d4d4d8",
-                },
-
-                "& .MuiChartsAxis-tick": {
-                  stroke: "#d4d4d8",
-                },
-
-                "& .MuiChartsGrid-line": {
-                  stroke: "rgba(0,0,0,0.08)",
-                  strokeDasharray: "4 4",
-                },
-
-                "& .MuiBarElement-root": {
-                  fill: "#6B8754",
-                  filter: "drop-shadow(0px 4px 6px rgba(0,0,0,0.15))",
-                  transition: "0.25s ease",
-                },
-
-                "& .MuiBarElement-root:hover": {
-                  fill: "#4b6337",
-                },
-
-                "& .MuiChartsAxis-tickLabel": {
-                  fill: "#18181b",
+          <BarChart
+            height={400}
+            xAxis={[
+              {
+                data: clubs,
+                scaleType: "band",
+                tickLabelStyle: {
+                  angle: 45,
+                  fontSize: 10,
                   fontFamily: "'Lexend', sans-serif",
                 },
-              }}
-            />
-          </Box>
+                height: 80,
+              },
+            ]}
+            yAxis={[
+              {
+                width: 50,
+                valueFormatter: (v) =>
+                  v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
+                tickLabelStyle: {
+                  fontFamily: "'Lexend', sans-serif",
+                  fontSize: 11,
+                },
+              },
+            ]}
+            series={[
+              {
+                data: netSpendInPounds,
+                valueFormatter: (v) =>
+                  v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
+                color: "#6B8754",
+              },
+            ]}
+            borderRadius={6}
+            grid={{ horizontal: true }}
+            sx={{
+              "& .MuiChartsAxis-line": {
+                stroke: "#d4d4d8",
+              },
+
+              "& .MuiChartsAxis-tick": {
+                stroke: "#d4d4d8",
+              },
+
+              "& .MuiChartsGrid-line": {
+                stroke: "rgba(0,0,0,0.08)",
+                strokeDasharray: "4 4",
+              },
+
+              "& .MuiBarElement-root": {
+                fill: "#6B8754",
+                filter: "drop-shadow(0px 4px 6px rgba(0,0,0,0.15))",
+                transition: "0.3s ease",
+              },
+
+              "& .MuiBarElement-root:hover": {
+                fill: "#4b6337",
+              },
+
+              "& .MuiChartsAxis-tickLabel": {
+                fill: "#18181b",
+                fontFamily: "'Lexend', sans-serif",
+              },
+            }}
+          />
         </Card>
 
-          {/* PIE CHART */}
-            <Card
-              sx={{
-                flex: 1,
-                borderRadius: 3,
-                flexDirection: "column",
-                boxShadow: "0 6px 20px rgba(0,0,0,0.08)",
-                transition: "0.3s",
+        {/* PIE CHART */}
+        <Card
+          sx={{
+            ...dashboardCardSx,
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography sx={{ mb: 2, fontWeight: 600 }}>
+            Distribution
+          </Typography>
 
-                "&:hover": {
-                  transform: "translateY(-4px)",
-                  boxShadow: "0 10px 25px rgba(0,0,0,0.12)",
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  mb: 1,
-                  fontWeight: 600,
-                  fontFamily: "'Lexend', sans-serif",
-                  color: "#13220d",
-                }}
-              >
-                Category Share
-              </Typography>
+          <PieChart
+            width={250}
+            height={250}
+            series={[
+              {
+                innerRadius: 45,
+                outerRadius: 90,
+                paddingAngle: 3,
+                cornerRadius: 6,
+                cx: 110,
+                cy: 100,
 
-              <Box
-                sx={{
-                  flex: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-              <PieChart
-                  width={250}
-                  height={240}
-                  series={[
-                    {
-                      innerRadius: 45,
-                      outerRadius: 90,
-                      paddingAngle: 2,
-                      cornerRadius: 5,
-
-                      data: [
-                        { id: 0, value: 60, label: "A", color: "#6B8754" },
-                        { id: 1, value: 80, label: "B", color: "#e48c9d" },
-                        { id: 2, value: 20, label: "C", color: "#f5c16c" },
-                        { id: 3, value: 10, label: "D", color: "#8b5cf6" },
-                      ],
-                    },
-                  ]}
-                  slotProps={{
-                    legend: {
-                      labelStyle: {
-                        fontFamily: "'Lexend', sans-serif",
-                        fontSize: 12,
-                      },
-                    },
-                  }}
-                />
-              </Box>
-            </Card>
-          </Stack>
+                data: [
+                  {
+                    id: 1,
+                    value: 60,
+                    label: "A",
+                    color: "#6B8754",
+                  },
+                  {
+                    id: 2,
+                    value: 80,
+                    label: "B",
+                    color: "#e48c9d",
+                  },
+                  {
+                    id: 3,
+                    value: 20,
+                    label: "C",
+                    color: "#f5c16c",
+                  },
+                  {
+                    id: 4,
+                    value: 10,
+                    label: "D",
+                    color: "#8b5cf6",
+                  },
+                ],
+              },
+            ]}
+          />
+        </Card>
+      </Stack>
 
       <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
 
