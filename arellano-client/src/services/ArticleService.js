@@ -1,7 +1,8 @@
 import axios from 'axios';
+import constants from '../constants';
 
 const API = axios.create({
-    baseURL: `${import.meta.env.VITE_API_URL}/api/articles`,
+    baseURL: `${constants.HOST}/api/articles`,
 });
 
 // Fetch articles

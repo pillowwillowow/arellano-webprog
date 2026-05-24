@@ -1,5 +1,5 @@
-const constants = {
-  HOST: "https://arellano-webprog.onrender.com",
-};
+const HOST = `${import.meta.env.VITE_API_URL}`;
 
-export default constants;
+export default {
+    HOST,
+};
