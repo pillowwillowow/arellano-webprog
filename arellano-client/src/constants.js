@@ -1,3 +1,3 @@
 const constants = {
-  HOST: "http://localhost:5000"
+  HOST: "http://localhost:8000"
 };
