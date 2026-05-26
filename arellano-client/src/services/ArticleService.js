@@ -2,7 +2,7 @@ import axios from 'axios';
 import constants from '../constants';
 
 const API = axios.create({
-  baseURL: `${constants.HOST}/api/users`,
+  baseURL: `${constants.HOST}/api/articles`,
 });
 
 // Fetch articles
