@@ -133,24 +133,65 @@ function DashboardPage() {
             xAxis={[
               {
                 data: clubs,
-                tickLabelStyle: { angle: 45, fontSize: 10 },
+                scaleType: "band",
+                tickLabelStyle: {
+                  angle: 45,
+                  fontSize: 10,
+                  fontFamily: "'Lexend', sans-serif",
+                },
                 height: 80,
               },
             ]}
             yAxis={[
               {
                 width: 50,
-                valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
+                valueFormatter: (v) =>
+                  v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
+                tickLabelStyle: {
+                  fontFamily: "'Lexend', sans-serif",
+                  fontSize: 11,
+                },
               },
             ]}
             series={[
               {
                 data: netSpendInPounds,
-                valueFormatter: (v) => (v < 0 ? `-£${-v}m` : `£${v}m`),
-                colorGetter: (params) =>
-                clubColors[params.dataIndex],
+                valueFormatter: (v) =>
+                  v < 0 ? `-£${Math.abs(v)}m` : `£${v}m`,
+                color: "#6B8754",
               },
             ]}
+            borderRadius={6}
+            grid={{ horizontal: true }}
+            sx={{
+              "& .MuiChartsAxis-line": {
+                stroke: "#d4d4d8",
+              },
+
+              "& .MuiChartsAxis-tick": {
+                stroke: "#d4d4d8",
+              },
+
+              "& .MuiChartsGrid-line": {
+                stroke: "rgba(0,0,0,0.08)",
+                strokeDasharray: "4 4",
+              },
+
+              "& .MuiBarElement-root": {
+                fill: "#6B8754",
+                filter: "drop-shadow(0px 4px 6px rgba(0,0,0,0.15))",
+                transition: "0.3s ease",
+              },
+
+              "& .MuiBarElement-root:hover": {
+                fill: "#4b6337",
+              },
+
+              "& .MuiChartsAxis-tickLabel": {
+                fill: "#18181b",
+                fontFamily: "'Lexend', sans-serif",
+              },
+            }}
           />
         </Card>
 
@@ -164,21 +205,47 @@ function DashboardPage() {
             alignItems: "center",
           }}
         >
-          <Typography sx={{ mb: 2, fontWeight: 600 }}>
+          <Typography sx={{ mb: 2, fontWeight: 600, alignSelf: "flex-start" }}>
             Distribution
           </Typography>
 
           <PieChart
-            width={250}
-            height={250}
+            width={280}
+            height={280}
             series={[
               {
+                innerRadius: 45,
+                outerRadius: 90,
+                paddingAngle: 3,
+                cornerRadius: 6,
+
                 data: [
-                  { id: 0, value: 60, label: "A" },
-                  { id: 1, value: 80, label: "B" },
-                  { id: 2, value: 20, label: "C" },
-                  { id: 3, value: 10, label: "D" },
+                  {
+                    id: 1,
+                    value: 60,
+                    label: "A",
+                    color: "#6B8754",
+                  },
+                  {
+                    id: 2,
+                    value: 80,
+                    label: "B",
+                    color: "#e48c9d",
+                  },
+                  {
+                    id: 3,
+                    value: 20,
+                    label: "C",
+                    color: "#f5c16c",
+                  },
+                  {
+                    id: 4,
+                    value: 10,
+                    label: "D",
+                    color: "#8b5cf6",
+                  },
                 ],
+              valueFormatter: () => "",
               },
             ]}
           />
