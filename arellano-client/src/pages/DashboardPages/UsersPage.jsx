@@ -402,7 +402,6 @@
 
                   backgroundColor: isActive ? "#e6f4ea" : "#f3f3f3",
                   color: isActive ? "#1b5e20" : "#555",
-
                   border: isActive ? "1px solid #6B8754" : "1px solid #ddd",
                 }}
               />
@@ -574,8 +573,43 @@
                 }}
                 sx={{
                   minWidth: 0,
-                  '& .MuiDataGrid-cell, & .MuiDataGrid-columnHeader': {
-                    outline: 'none',
+                  border: "none",
+                  backgroundColor: "#fff",
+
+                  "& .MuiDataGrid-main": {
+                    backgroundColor: "#fff",
+                  },
+
+                  "& .MuiDataGrid-row": {
+                    backgroundColor: "#fff",
+                  },
+
+                  "& .MuiDataGrid-cell": {
+                    backgroundColor: "#fff",
+                    outline: "none",
+                  },
+
+                  "& .MuiDataGrid-columnHeader": {
+                    outline: "none",
+                    backgroundColor: "#f5f5f5",
+                  },
+
+                  "& .MuiDataGrid-columnHeaders": {
+                    backgroundColor: "#f5f5f5",
+                    color: "#000",
+                    fontWeight: 600,
+                  },
+
+                  "& .MuiDataGrid-row:nth-of-type(even)": {
+                    backgroundColor: "#fafafa",
+                  },
+
+                  "& .MuiDataGrid-row:hover": {
+                    backgroundColor: "#f3f4f6 !important",
+                  },
+
+                  "& .MuiDataGrid-footerContainer": {
+                    backgroundColor: "#fff",
                   },
                 }}
               />
@@ -617,6 +651,8 @@
               px: { xs: 2, sm: 3 },
               py: 3,
               background: "#A3B18A",
+              maxHeight: "70vh",  
+              overflowY: "auto",
             }}>
             <Stack spacing={2} sx={{ pt: 1 }}>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
