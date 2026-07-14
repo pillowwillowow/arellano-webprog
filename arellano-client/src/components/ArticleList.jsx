@@ -6,7 +6,7 @@ const ArticleList = ({ articles }) => {
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {articles.map((article, index) => (
         <article
-          key={article.name} 
+          key={article._id}
           className="flex flex-col rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-4"
         >
 
@@ -22,19 +22,24 @@ const ArticleList = ({ articles }) => {
 
           <div className="flex flex-col flex-1 mt-4">
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-zinc-500">
-              Article {String(index + 1).padStart(2, '0')}
+              Article {String(index + 1).padStart(2, "0")}
             </p>
 
-            <h3 className="mt-2 text-sm text-zinc-900">{article.title}</h3>
+            <h3 className="mt-2 text-sm text-zinc-900">
+              {article.title}
+            </h3>
 
             <p className="mt-2 text-sm text-zinc-600 flex-1">
-              {article.content[0].substring(0, 120)}...
+              {article.content.substring(0, 120)}...
             </p>
 
-            <Link to={`/articles/${article.name}`}>
-              <Button className="mt-4">Read More</Button>
+            <Link to={`/articles/${article.slug}`}>
+              <Button className="mt-4">
+                Read More
+              </Button>
             </Link>
           </div>
+
         </article>
       ))}
     </div>

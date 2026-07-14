@@ -36,6 +36,7 @@ const blankArticle = {
   slug: "",
   title: "",
   content: "",
+  image: "",
   featured: false,
   isActive: true,
 };
@@ -125,16 +126,17 @@ const DashArticleListPage = () => {
   };
 
   const handleEdit = (article) => {
-    setNewArticle({
-      slug: article.slug || "",
-      title: article.title || "",
-      content: article.content || "",
-      featured: article.featured || false,
-      isActive:
-        typeof article.isActive === "boolean"
-          ? article.isActive
-          : true,
-    });
+  setNewArticle({
+    slug: article.slug || "",
+    title: article.title || "",
+    content: article.content || "",
+    image: article.image || "",
+    featured: article.featured || false,
+    isActive:
+      typeof article.isActive === "boolean"
+        ? article.isActive
+        : true,
+  });
 
     setEditArticleId(article._id);
     setIsEditing(true);
@@ -180,16 +182,19 @@ const DashArticleListPage = () => {
 
  { /* SAVE ARTICLE */ }
   const handleSaveArticle = async () => {
-    if (!validate()) return;
+    if (!newArticle.image.trim()) {
+    nextErrors.image = "Image URL is required.";
+  }
 
     try {
-      const articleData = {
-        slug: newArticle.slug.trim(),
-        title: newArticle.title.trim(),
-        content: newArticle.content.trim(),
-        featured: newArticle.featured,
-        isActive: newArticle.isActive,
-      };
+    const articleData = {
+      slug: newArticle.slug.trim(),
+      title: newArticle.title.trim(),
+      content: newArticle.content.trim(),
+      image: newArticle.image.trim(),
+      featured: newArticle.featured,
+      isActive: newArticle.isActive,
+    };
 
       if (isEditing) {
         await updateArticle(editArticleId, articleData);
@@ -243,6 +248,27 @@ const DashArticleListPage = () => {
       flex: 1,
       minWidth: 160,
     },
+
+    {
+      field: "image",
+      headerName: "Image",
+      width: 100,
+      sortable: false,
+      renderCell: (params) => (
+        <Box
+          component="img"
+          src={params.row.image}
+          alt={params.row.title}
+          sx={{
+            width: 50,
+            height: 50,
+            objectFit: "cover",
+            borderRadius: 2,
+            my: 1,
+          }}
+        />
+      ),
+},
 
     {
       field: "featured",
@@ -527,6 +553,39 @@ const DashArticleListPage = () => {
               : "Add Fairy Article"}
           </DialogTitle>
 
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+          >
+            <TextField
+              fullWidth
+              label="Image URL"
+              name="image"
+              placeholder="https://example.com/image.jpg"
+              value={newArticle.image}
+              onChange={handleChange}
+              error={!!errors.image}
+              helperText={errors.image}
+            />
+          </Stack>
+          {newArticle.image && (
+            <Box
+              component="img"
+              src={newArticle.image}
+              alt="Article Preview"
+              sx={{
+                width: "100%",
+                maxHeight: 220,
+                objectFit: "cover",
+                borderRadius: 2,
+                border: "1px solid #ddd",
+              }}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+            />
+          )}
           <DialogContent
             sx={{
               background: "#f7f8f2",
